@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "Visitrack_360",
+    "slug": "Visitrack_360",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/Images/myicon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/Images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff",
+      "plugins": [
+        [
+          "expo-image-picker",
+          {
+            "photosPermission": "The app accesses your photos to let you share them with your friends."
+          }
+        ]
+      ],
+      "permissions": {
+        "camera": true,
+        "mediaLibrary": true
+      }
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/Images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/Images/favicon.png"
+    }
+  }
+}
