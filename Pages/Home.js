@@ -1,151 +1,167 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, SafeAreaView, Text, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, StyleSheet, Dimensions, SafeAreaView, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Colors from '../constants/Colors';
 import FontSize from '../constants/FontSize';
+import Carousel from 'react-native-snap-carousel';
 
 const { height, width } = Dimensions.get("screen");
 
 export default function Home({ navigation }) {
+  const images = [
+    require("../assets/Images/Ora.jpg"),
+    require("../assets/Images/oranges.jpeg"),
+    require("../assets/Images/téléchargement.jpg"),
+    // Ajoutez d'autres images ici
+  ];
+
+  const _renderItem = ({ item }) => {
+    return (
+      <View style={styles.carouselContainer}>
+        <Image
+          style={styles.carouselImage}
+          source={item}
+        />
+      </View>
+    );
+  };
+
   return (
-    <SafeAreaView>
-      <KeyboardAwareScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        resetScrollToCoords={{ x: 0, y: 0 }}
-        scrollEnabled={false}
-      >
-        <View style={styles.container}>
-          <View style={styles.imageView}>
-            <ImageBackground
-              style={styles.images}
-              source={require("../assets/Images/audi.png")}
-              resizeMode='cover'
-            />
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Votre Header</Text>
+        </View>
+        <View style={styles.imageView}>
+          <Carousel
+            data={images}
+            renderItem={_renderItem}
+            sliderWidth={width}
+            itemWidth={width}
+            layout={'default'}
+            loop
+            autoplay={true}
+            autoplayInterval={5000}
+          />
+        </View>
+        <View style={styles.statistics}>
+          <Text style={styles.statisticsText}>Statistiques de collecte de supports</Text>
+          <Text style={styles.statisticsText}>Statistiques de collecte de supports</Text>
+          {/* Ajoutez vos composants de statistiques ici */}
+        </View>
+        <View style={styles.row}>
+          <View style={[styles.rightView, styles.spaceBetween]}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('HomPage1')}
+              style={[styles.box, styles.shadow, styles.boxRed]}>
+              <Ionicons name="ios-albums" size={60} color="white" />
+              <Text style={styles.boxText}>Affiche</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ProfilePage')}
+              style={[styles.box, styles.shadow, styles.boxBlue]}>
+              <Ionicons name="ios-person" size={60} color="white" />
+              <Text style={styles.boxText}>Profil</Text>
+            </TouchableOpacity>
           </View>
-          <View style={styles.statistics}>
-            {/* Ajoutez ici vos composants de statistiques */}
-            <Text style={styles.statisticsText}>Statistiques de collecte de supports</Text>
-            {/* Vous pouvez ajouter des graphiques, des nombres, etc. pour afficher les statistiques */}
-          </View>
-          <View style={styles.row}>
-            <View style={[styles.rightView, styles.spaceBetween]}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('HomPage1')}
-                style={[styles.box, styles.shadow, styles.boxRed]}>
-                <Ionicons name="ios-albums" size={60} color="white" />
-                <Text style={styles.boxText}>Affiche</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('ProfilePage')}
-                style={[styles.box, styles.shadow, styles.boxBlue]}>
-                <Ionicons name="ios-person" size={60} color="white" />
-                <Text style={styles.boxText}>Profil</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={[styles.rightView, styles.spaceBetween]}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('HomPage2')}
-                style={[styles.box, styles.shadow, styles.boxYellow]}>
-                <Ionicons name="ios-car" size={60} color="white" />
-                <Text style={styles.boxText}>Parking</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('ProfilePage')}
-                style={[styles.box, styles.shadow, styles.boxGreen]}>
-                <Ionicons name="ios-archive" size={60} color="white" />
-                <Text style={styles.boxText}>Historique</Text>
-              </TouchableOpacity>
-            </View>
+          <View style={[styles.rightView, styles.spaceBetween]}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('HomPage2')}
+              style={[styles.box, styles.shadow, styles.boxYellow]}>
+              <Ionicons name="ios-car" size={60} color="white" />
+              <Text style={styles.boxText}>Parking</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ProfilePage')}
+              style={[styles.box, styles.shadow, styles.boxGreen]}>
+              <Ionicons name="ios-archive" size={60} color="white" />
+              <Text style={styles.boxText}>Historique</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </KeyboardAwareScrollView>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: width / 14,
-    height: height,
+    flex: 1,
+  },
+  scrollViewContainer: {
+    flexGrow: 1,
+    paddingBottom: 20, // Ajout d'un espace au bas
   },
   header: {
-    backgroundColor: Colors.primary,
+    backgroundColor: '#236198',
     justifyContent: 'center',
     alignItems: 'center',
     height: 60,
   },
   headerText: {
     fontSize: FontSize.large,
+    fontWeight:'500',
     color: 'white',
   },
   imageView: {
-    height: "35%",
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: 300,
   },
-  images: {
-    height: "100%",
-    width: "100%",
+  carouselContainer: {
+    flex: 1,
+  },
+  carouselImage: {
+    height: '100%',
+    width: '100%',
+  },
+  statistics: {
+    margin: 20, // Ajout d'un espace en bas
+  },
+  statisticsText: {
+    fontSize: FontSize.medium,
+    fontWeight: 'bold',
+    color: '#586041',
   },
   row: {
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    flexDirection: 'row',
-    height: "35%",
-    marginVertical: "10%",
-    paddingHorizontal: "8%",
+    height: 180,
+    paddingHorizontal: 10,
+    marginTop:'15%'
   },
   rightView: {
-    height: "80%",
-    width: "44%",
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  shadow: {
-    borderWidth: 0.17,
-    shadowColor: '#3333333',
-    shadowOffset: { width: 5, height: 5 },
-    shadowOpacity: 0.30,
-    shadowRadius: 6,
+    marginHorizontal:'2%'
   },
   spaceBetween: {
     justifyContent: 'space-between',
   },
   box: {
-    width: '105%',
-    height: '50%',
+    width: '100%',
+    height: 150,
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 10,
   },
   boxRed: {
-    backgroundColor: '#FF6F61', // Rouge
+    backgroundColor: '#055093',
   },
   boxBlue: {
-    backgroundColor: '#45AAB8', // Bleu-vert
+    backgroundColor: '#57A3E7',
   },
   boxYellow: {
-    backgroundColor: '#FFD700', // Jaune
+    backgroundColor: '#FFD700',
   },
   boxGreen: {
-    backgroundColor: '#62CC52', // Vert
-  },
-  boxLightBlue: {
-    backgroundColor: '#7FC7FF', // Bleu clair
-  },
-  boxDarkBlue: {
-    backgroundColor: '#2B65A3', // Bleu foncé
+    backgroundColor: '#937B05',
   },
   boxText: {
     color: 'white',
+    fontWeight:'500',
     fontSize: FontSize.large,
     marginTop: 5,
-  },
-  statisticsText: {
-    fontSize: FontSize.medium,
-    fontWeight: 'bold',
-    color: Colors.primary,
-    justifyContent:'center'
   },
 });

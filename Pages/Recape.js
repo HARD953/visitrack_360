@@ -1,43 +1,62 @@
-import React from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image ,ImageBackground} from 'react-native';
+import React, {useState,useContext} from 'react';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import axios from 'axios';
+import { AuthContext } from '../Components/globalContext';
+
 const RecapPage = ({ navigation, route }) => {
   // Récupérer les données transmises depuis les écrans précédents
-  const { dataFromHomePage1, dataFromHomePage2 } = route.params
+  const { dataFromHomePage1, dataFromHomePage2 } = route.params;
+  const { userInfo, splashLoading } = useContext(AuthContext);
+
+  const headers = {
+    'Authorization': `Bearer ${userInfo.access}`,
+  };
   const handleSubmit = async () => {
     try {
-      // Définissez les données à envoyer au serveur
-      const dataToSend = {
-        "entreprise":dataFromHomePage1["entreprise"],
-        "marque":dataFromHomePage1["marque"],
-        "commune":dataFromHomePage1["commune"],
-        "typeSupport":dataFromHomePage1["typeSupport"],
-        "surface":dataFromHomePage1["surface"],
-        "canal":dataFromHomePage1["canal"],
-        "etatSupport":dataFromHomePage1["etatSupport"],
-        "visibilite":dataFromHomePage1["visibilite"],
-        "duree":dataFromHomePage1["duree"],
-        "emplacementExact":dataFromHomePage1["emplacementExact"],
-        "observation":dataFromHomePage2["observation"],
-        "odp":dataFromHomePage2["odp"],
-        "image":dataFromHomePage2["image"],
-        "latitude":dataFromHomePage2["latitude"],
-        "longitude":dataFromHomePage2["longitude"],
-      };
-      // Effectuez une requête POST vers votre point d'API
-      const response = await axios.post('https://auditapi.up.railway.app/api/donneescollectees/', dataToSend);
+      const formData = new FormData();
+      formData.append('entreprise', dataFromHomePage1['entreprise']);
+      formData.append('Marque', dataFromHomePage1['marque']);
+      formData.append('commune', dataFromHomePage1['commune']);
+      formData.append('type_support', dataFromHomePage1['typeSupport']);
+      formData.append('surface', dataFromHomePage1['surface']);
+      formData.append('surfaceODP', dataFromHomePage2['SurfaceODP']);
+      formData.append('canal', dataFromHomePage1['canal']);
+      formData.append('etat_support', dataFromHomePage1['etatSupport']);
+      formData.append('visibilite', dataFromHomePage1['visibilite']);
+      formData.append('duree', dataFromHomePage1['duree']);
+      formData.append('description', dataFromHomePage2['emplacementExact']);
+      formData.append('observation', dataFromHomePage2['observation']);
+      formData.append('ODP', dataFromHomePage2['value']);
+      formData.append('latitude', dataFromHomePage2['latitude']);
+      formData.append('longitude', dataFromHomePage2['longitude']);
+
+      if (dataFromHomePage2['image']) {
+        formData.append('image_support', {
+          uri: dataFromHomePage2['image'],
+          type: 'image/jpeg/png/jpg', // Assurez-vous de spécifier le type MIME correct
+          name: 'imageddd.jpg', // Nom du fichier sur le serveur
+        });
+      }
+
+      const response = await axios.post(
+        'https://auditapi.up.railway.app/api/collectedata/',
+        formData,
+        {
+          headers: {
+            ...headers,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
 
       if (response.status === 200) {
-        // Soumission réussie
         console.log('Données soumises avec succès');
-        // Vous pouvez ajouter une logique supplémentaire ici, telle qu'un message de réussite pour l'utilisateur.
       }
     } catch (error) {
-      // Gérez les erreurs qui se sont produites pendant la requête
       console.error('Erreur lors de la soumission des données :', error);
-      // Vous pouvez afficher un message d'erreur à l'utilisateur ici.
     }
+    navigation.replace('SplashScreens');
   };
 
   return (
@@ -65,6 +84,10 @@ const RecapPage = ({ navigation, route }) => {
           <Text style={styles.value}>{dataFromHomePage1["surface"]}</Text>
         </View>
         <View style={styles.infoContainer}>
+          <Text style={styles.label}>SurfaceODP:</Text>
+          <Text style={styles.value}>{dataFromHomePage2["SurfaceODP"]}</Text>
+        </View>
+        <View style={styles.infoContainer}>
           <Text style={styles.label}>Canal:</Text>
           <Text style={styles.value}>{dataFromHomePage1["canal"]}</Text>
         </View>
@@ -90,9 +113,8 @@ const RecapPage = ({ navigation, route }) => {
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.label}>ODP:</Text>
-          <Text style={styles.value}>{dataFromHomePage2["odp"] ? 'Oui' : 'Non'}</Text>
+          <Text style={styles.value}>{dataFromHomePage2["value"] ? 'Oui' : 'Non'}</Text>
         </View>
-        
         <View style={styles.infoContainer}>
           <Text style={styles.label}>Latitude:</Text>
           <Text style={styles.value}>{dataFromHomePage2["latitude"]}</Text>
@@ -102,18 +124,17 @@ const RecapPage = ({ navigation, route }) => {
           <Text style={styles.value}>{dataFromHomePage2["longitude"]}</Text>
         </View>
         <View style={styles.imageContainer}>
-        {dataFromHomePage2["image"] && (
-          <View style={styles.imageContainer}>
-            <Image source={{ uri: dataFromHomePage2["image"] }} style={styles.image} />
-          </View>
-        )}
-        </View>
+          {dataFromHomePage2["image"] && (
+            <Image
+              source={{ uri: dataFromHomePage2["image"] }}
+              style={styles.image}
+            />
+          )}
+       </View>
       </ScrollView>
       <TouchableOpacity
         style={styles.submitButton}
-        onPress={() => {
-          // Ajoutez ici la logique de soumission des données au serveur
-        }}
+        onPress={handleSubmit}
       >
         <Text style={styles.submitText}>Soumettre</Text>
         <MaterialIcons name="check-circle" size={30} color="white" />
@@ -143,7 +164,9 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: 'bold',
   },
-  value: {},
+  value: {
+
+  },
   submitButton: {
     backgroundColor: '#007AFF', // Couleur du bouton
     borderRadius: 10,

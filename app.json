@@ -27,16 +27,23 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "y"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/Images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.samajeste01.Visitrack_360"
     },
     "web": {
       "favicon": "./assets/Images/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c33eb030-8290-45cc-a6f3-7e43fe53c2f7"
+      }
     }
   }
 }

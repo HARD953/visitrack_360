@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
-import React, {useState,useContext} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import React, {useContext} from 'react';
+import { StyleSheet} from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../Components/globalContext';
@@ -9,6 +9,7 @@ import HomPage2 from './HomePage2';
 import Home from './Home';
 import RecapPage from './Recape';
 import ProfilePage from './Profile';
+import SplashScreens from './Splashsubmit';
 // import YourComponent1 from './Pages/Coordonne';
 
 const Stack = createNativeStackNavigator();
@@ -18,9 +19,9 @@ export default function Navigue() {
   return (
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={Home} options={({ navigation }) => ({
-                        title: 'Ma Page d\'Accueil',
+                        title: 'Lanfiatech',
                         headerStyle: {
-                        backgroundColor: 'dodgerblue',
+                        backgroundColor: '#236198',
                         },
                         headerTintColor: 'white',
                         headerTitleStyle: {
@@ -39,10 +40,92 @@ export default function Navigue() {
                 ),
         })}
   />
-        <Stack.Screen name="HomPage1" component={HomPage1} options={{ headerShown: false }}/>
-        <Stack.Screen name="HomPage2" component={HomPage2} options={{ headerShown: false }}/>
-        <Stack.Screen name="RecapPage" component={RecapPage} options={{ headerShown: false }}/>
-        <Stack.Screen name="ProfilePage" component={ProfilePage} options={{ headerShown: false }}/>
+        <Stack.Screen name="HomPage1" component={HomPage1} options={({ navigation }) => ({
+                      
+                        headerStyle: {
+                        backgroundColor: '#236198',
+                        },
+                        headerTintColor: 'white',
+                        headerTitleStyle: {
+                        fontWeight: 'bold',
+                        },
+                        headerRight: () => (
+                        <Ionicons
+                            name="ios-archive"
+                            size={30}
+                            color="white"
+                            style={{ marginRight: 20 }}
+                            onPress={() => {
+                            // Ajoutez ici la logique que vous souhaitez exécuter lorsque l'icône est pressée
+                    }}
+                />
+                ),
+        })}/>
+        <Stack.Screen name="HomPage2" component={HomPage2} options={({ navigation }) => ({
+                        title: 'Lanfiatech',
+                        headerStyle: {
+                        backgroundColor: '#236198',
+                        },
+                        headerTintColor: 'white',
+                        headerTitleStyle: {
+                        fontWeight: 'bold',
+                        },
+                        headerRight: () => (
+                        <Ionicons
+                            name="ios-archive"
+                            size={30}
+                            color="white"
+                            style={{ marginRight: 20 }}
+                            onPress={() => {
+                            // Ajoutez ici la logique que vous souhaitez exécuter lorsque l'icône est pressée
+                    }}
+                />
+                ),
+        })}/>
+        <Stack.Screen name="RecapPage" component={RecapPage} options={({ navigation }) => ({
+                        
+                        title: 'Lanfiatech',
+                        headerStyle: {
+                        backgroundColor: '#236198',
+                        },
+                        headerTintColor: 'white',
+                        headerTitleStyle: {
+                        fontWeight: 'bold',
+                        },
+                        headerRight: () => (
+                        <Ionicons
+                            name="ios-archive"
+                            size={30}
+                            color="white"
+                            style={{ marginRight: 20 }}
+                            onPress={() => {
+                            // Ajoutez ici la logique que vous souhaitez exécuter lorsque l'icône est pressée
+                    }}
+                />
+                ),
+        })}/>
+        <Stack.Screen name="ProfilePage" component={ProfilePage} options={({ navigation }) => ({
+                        title: 'Lanfiatech',
+                        headerStyle: {
+                        backgroundColor: '#236198',
+                        },
+                        headerTintColor: 'white',
+                        headerTitleStyle: {
+                        fontWeight: 'bold',
+                        },
+                        headerRight: () => (
+                        <Ionicons
+                            name="ios-archive"
+                            size={30}
+                            color="white"
+                            style={{ marginRight: 20 }}
+                            onPress={() => {
+                            // Ajoutez ici la logique que vous souhaitez exécuter lorsque l'icône est pressée
+                    }}
+                />
+                ),
+        })}/>
+        <Stack.Screen name="SplashScreens" component={SplashScreens} options={{ headerShown: false }}/>
         {/* <Stack.Screen name="LogPage" component={LogPage} options={{ headerShown: false }}/>
         <Stack.Screen name="Home" component={Home} options={({ navigation }) => ({
             title: 'Ma Page d\'Accueil',

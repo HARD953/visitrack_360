@@ -5,10 +5,6 @@ import { SafeAreaView, StyleSheet, TextInput, Button, Text, View, ImageBackgroun
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { Ionicons } from '@expo/vector-icons';
-import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-
 import Colors from '../constants/Colors';
 import Font from "../constants/Font";
 import FontSize from '../constants/FontSize';
@@ -29,7 +25,16 @@ export default function HomPage1({ navigation }) {
   const [visibilite, setVisibilite] = useState('');
   const [duree, setDuree] = useState('');
 
-  const data = [
+  const entrepri=[
+    {key:'1',value:'Commercial'},
+    {key:'2',value:'Non Commercial'}
+  ]
+  const marq=[
+    {key:'1',value:'Orange'},
+    {key:'2',value:'Moov'},
+    {key:'3',value:'MTN'}
+  ]
+  const comm = [
     { key: '1', value: 'Abobo' },
     { key: '2', value: 'Adjamé' },
     { key: '3', value: 'Plateau' },
@@ -38,7 +43,41 @@ export default function HomPage1({ navigation }) {
     { key: '6', value: 'Cocody' },
     { key: '7', value: 'Yopougon' },
   ]
+  const types=[
+    {key:'1',value:'Abri bâche'},
+    {key:'2',value:'Affiche'},
+    {key:'3',value:'Arche'},
+    {key:'4',value:'Banderole'},
+    {key:'5',value:'Barrière brandée'},
+    {key:'6',value:'Chevalets'},
+    {key:'7',value:'Cube'},
+    {key:'8',value:'Guirlandes'},
+  ]
+
+  const site=[
+    {key:'1',value:'Commercial'},
+    {key:'2',value:'Non Commercial'}
+  ]
   
+  const canals=[
+    {key:'1',value:'Agence'},
+    {key:'2',value:'Boutique'},
+    {key:'3',value:'Franchise'},
+    {key:'4',value:'Magasin'},
+    {key:'5',value:'Mini Franchise'},
+    {key:'6',value:'Mûr'}
+  ]
+  const etats=[
+    {key:'1',value:'Bon'},
+    {key:'2',value:'Défraichis'},
+    {key:'3',value:'Détérioré'}
+  ]
+  const visibile=[
+    {key:'1',value:'Bonne'},
+    {key:'2',value:'Dégradé'},
+    {key:'3',value:'Moyenne'},
+    {key:'4',value:'Obstruée'}
+  ]
   const navigateToHomePage2 = () => {
     const dataFromHomePage1 = {
       entreprise,
@@ -79,19 +118,21 @@ export default function HomPage1({ navigation }) {
               />
             </View>
             <View style={styles.saisi} >
-              <TextInput
-                style={styles.inputs}
-                placeholder='Marque'
-                placeholderTextColor={Colors.darkText}
-                value={marque}
-                onChangeText={setMarque}
-              />
+              <SelectList
+              placeholder='Marque ...'
+              placeholderTextColor={Colors.darkText}
+              setSelected={(val) => setMarque(val)}
+              data={marq}
+              save="value"
+              value={marque}
+              onChangeText={setMarque}
+            />
             </View>
             <SelectList
               placeholder='Commune ...'
               placeholderTextColor={Colors.darkText}
               setSelected={(val) => setCommune(val)}
-              data={data}
+              data={comm}
               save="value"
               value={commune}
               onChangeText={setCommune}
@@ -100,12 +141,11 @@ export default function HomPage1({ navigation }) {
               placeholder='Type support ...'
               placeholderTextColor={Colors.darkText}
               setSelected={(val) => setTypeSupport(val)}
-              data={data}
+              data={types}
               save="value"
               value={typeSupport}
               onChangeText={setTypeSupport}
             />
-
             <View style={styles.saisi} >
               <TextInput
                 style={styles.inputs}
@@ -121,7 +161,7 @@ export default function HomPage1({ navigation }) {
               placeholder='Canal ...'
               placeholderTextColor={Colors.darkText}
               setSelected={(val) => setCanal(val)}
-              data={data}
+              data={canals}
               save="value"
               value={canal}
               onChangeText={setCanal}
@@ -130,7 +170,7 @@ export default function HomPage1({ navigation }) {
               placeholder='Etat support ...'
               placeholderTextColor={Colors.darkText}
               setSelected={(val) => setEtatSupport(val)}
-              data={data}
+              data={etats}
               save="value"
               value={etatSupport}
               onChangeText={setEtatSupport}
@@ -139,7 +179,7 @@ export default function HomPage1({ navigation }) {
               placeholder='Visibilité ...'
               placeholderTextColor={Colors.darkText}
               setSelected={(val) => setVisibilite(val)}
-              data={data}
+              data={visibile}
               save="value"
               value={visibilite}
               onChangeText={setVisibilite}

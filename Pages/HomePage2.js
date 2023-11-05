@@ -9,8 +9,7 @@ import Colors from '../constants/Colors';
 import Font from '../constants/Font';
 import FontSize from '../constants/FontSize';
 import Spacing from '../constants/Spacing';
-import HomPage1 from './HomePage1';
-import { SelectList } from 'react-native-dropdown-select-list'
+
 
 const { height, width } = Dimensions.get("screen");
 
@@ -21,6 +20,7 @@ export default function HomPage2({ navigation,route }) {
   const [image, setImage] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+  const [SurfaceODP, setSurfaceODP] = useState(false);
 
   const data = [
     { key: '1', value: 'Abobo' },
@@ -87,6 +87,7 @@ export default function HomPage2({ navigation,route }) {
 
   const handleSubmit = () => {
     const dataFromHomePage2 = {
+      SurfaceODP,
       emplacementExact,
       observation,
       value,
@@ -107,14 +108,26 @@ export default function HomPage2({ navigation,route }) {
           <Text style={styles.txt}>Enregistrement 2/2</Text>
         </View>
         <View style={styles.champ}>
-        <SelectList
+        {/* <SelectList
               placeholder='Commune ...'
               placeholderTextColor={Colors.darkText}
               setSelected={(val) => setObservation(val)}
               data={data}
               save="value"
               value={observation}
-            />
+            /> */}
+            {value && (
+            <View style={styles.saisi}>
+              <TextInput
+                style={styles.inputs1}
+                placeholder="SurfaceODP"
+                placeholderTextColor={Colors.darkText}
+                keyboardType='numeric'
+                value={SurfaceODP}
+                onChangeText={(text) => setSurfaceODP(text)}
+              />
+            </View>
+          )}
         <View style={styles.saisi}>
             <TextInput
               style={styles.inputs}
@@ -140,7 +153,10 @@ export default function HomPage2({ navigation,route }) {
             <Switch
               value={value}
               circleSize={27}
-              onValueChange={() => setValue(!value)}
+              onValueChange={(newValue) => {
+                console.log('Switch value changed to', newValue);
+                setValue(newValue);
+              }}
               activeText=""
               inActiveText=""
             />
@@ -239,7 +255,7 @@ const styles = StyleSheet.create({
   },
   txt: {
     fontSize: FontSize.large,
-    color: '#5DADE2', // Couleur bleue
+    color: '#01579B', // Couleur bleue
     fontFamily: Font["poppins-bold"],
     fontWeight: '700',
     marginVertical: Spacing * 2,
@@ -262,6 +278,15 @@ const styles = StyleSheet.create({
     borderRadius: Spacing,
     width: "100%",
     height: "100%",
+  },
+  inputs1: {
+    fontFamily: Font["poppins-regular"],
+    fontSize: FontSize.medium,
+    padding: Spacing * 1.5,
+    borderWidth: 0.5,
+    borderColor: '#778',
+    borderRadius: Spacing,
+    width: "100%",
   },
   textOPD: {
     fontSize: FontSize.large,
