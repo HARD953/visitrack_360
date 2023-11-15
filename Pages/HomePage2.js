@@ -20,6 +20,8 @@ export default function HomPage2({ navigation,route }) {
   const [image, setImage] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+  const [latitude1, setLatitude1] = useState(null);
+  const [longitude1, setLongitude1] = useState(null);
   const [SurfaceODP, setSurfaceODP] = useState(false);
 
   const data = [
@@ -92,8 +94,8 @@ export default function HomPage2({ navigation,route }) {
       observation,
       value,
       image,
-      latitude,
-      longitude,
+      latitude1,
+      longitude1,
     };
     navigation.navigate('RecapPage', { dataFromHomePage1, dataFromHomePage2 });
   };
@@ -148,6 +150,24 @@ export default function HomPage2({ navigation,route }) {
               onChangeText={(text) => setObservation(text)}
             />
           </View>
+          <View style={styles.saisi}>
+          <TextInput
+          style={styles.inputs}
+          placeholder="Latitude"
+          keyboardType='numeric'
+          value={latitude1}
+          onChangeText={(text) => setLatitude1(text)}
+        />
+          </View>
+          <View style={styles.saisi}>
+          <TextInput
+          style={styles.inputs}
+          placeholder="Longitude"
+          keyboardType='numeric'
+          value={longitude1}
+          onChangeText={(text) => setLongitude1(text)}
+        />
+          </View>
           <View style={styles.swi}>
             <Text style={styles.textOPD}>ODP</Text>
             <Switch
@@ -179,8 +199,8 @@ export default function HomPage2({ navigation,route }) {
           <View style={styles.MapView}>
             <MaterialIcons name="my-location" style={styles.iconeLoc} />
             <View style={styles.coordLoc}>
-              <Text>Latitude : {latitude}</Text>
-              <Text>Longitude : {longitude}</Text>
+              <Text>Latitude : {latitude1}</Text>
+              <Text>Longitude : {longitude1}</Text>
             </View>
             <TouchableOpacity onPress={getLocation} style={styles.getLocationButton}>
               <Text style={styles.getLocationButtonText}>Coordonnée</Text>
@@ -201,6 +221,7 @@ const styless = StyleSheet.create({
     flex: 1,
     paddingHorizontal: width / 14,
     justifyContent: 'center',
+    backgroundColor:'#F4F8F7'
   },
   buttonsContainer: {
     justifyContent: 'space-between',
@@ -277,7 +298,7 @@ const styles = StyleSheet.create({
     borderColor: '#778',
     borderRadius: Spacing,
     width: "100%",
-    height: "100%",
+    height: "85%",
   },
   inputs1: {
     fontFamily: Font["poppins-regular"],

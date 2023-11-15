@@ -210,7 +210,8 @@ export default function HomPage1({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: width / 14,
-    height: height
+    height: height,
+    backgroundColor:'#F4F8F7'
   },
   appB: {
     flexDirection: 'row',

@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Visitrack_360",
-    "slug": "Visitrack_360",
+    "slug": "visite",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/Images/myicon.png",
@@ -42,8 +42,12 @@
     },
     "extra": {
       "eas": {
-        "projectId": "c33eb030-8290-45cc-a6f3-7e43fe53c2f7"
+        "projectId": "2bdf0883-f927-47ac-ae74-d3005609dcda"
       }
-    }
+    },
+    "plugins": [
+      "expo-build-properties"
+    ],
+    "owner": "samajeste01"
   }
 }

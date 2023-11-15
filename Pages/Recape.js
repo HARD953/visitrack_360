@@ -28,17 +28,16 @@ const RecapPage = ({ navigation, route }) => {
       formData.append('description', dataFromHomePage2['emplacementExact']);
       formData.append('observation', dataFromHomePage2['observation']);
       formData.append('ODP', dataFromHomePage2['value']);
-      formData.append('latitude', dataFromHomePage2['latitude']);
-      formData.append('longitude', dataFromHomePage2['longitude']);
-
+      formData.append('latitude', dataFromHomePage1['surface']);
+      formData.append('longitude', dataFromHomePage1['surface']);
+      
       if (dataFromHomePage2['image']) {
         formData.append('image_support', {
           uri: dataFromHomePage2['image'],
-          type: 'image/jpeg/png/jpg', // Assurez-vous de spécifier le type MIME correct
+          type: 'jpeg/png/jpg', // Assurez-vous de spécifier le type MIME correct
           name: 'imageddd.jpg', // Nom du fichier sur le serveur
         });
       }
-
       const response = await axios.post(
         'https://auditapi.up.railway.app/api/collectedata/',
         formData,
@@ -49,7 +48,7 @@ const RecapPage = ({ navigation, route }) => {
           },
         }
       );
-
+      
       if (response.status === 200) {
         console.log('Données soumises avec succès');
       }
@@ -117,11 +116,11 @@ const RecapPage = ({ navigation, route }) => {
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.label}>Latitude:</Text>
-          <Text style={styles.value}>{dataFromHomePage2["latitude"]}</Text>
+          <Text style={styles.value}>{dataFromHomePage2["latitude1"]}</Text>
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.label}>Longitude:</Text>
-          <Text style={styles.value}>{dataFromHomePage2["longitude"]}</Text>
+          <Text style={styles.value}>{dataFromHomePage2["longitude1"]}</Text>
         </View>
         <View style={styles.imageContainer}>
           {dataFromHomePage2["image"] && (
@@ -147,6 +146,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor:'#F4F8F7'
   },
   scrollContent: {
     flexGrow: 1,
