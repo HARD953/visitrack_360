@@ -55,7 +55,6 @@ export const Avatar =styled.Image`
     margin:auto;
     border-radius:50px;
     border-width:2px;
-    border-color:${secondary};
     margin-bottom:10px;
     margin-top:10px;
 `
@@ -66,7 +65,6 @@ export const Avatar1 =styled.Image`
     margin:auto;
     border-radius:50px;
     border-width:0px;
-    border-color:${secondary};
     margin-bottom:10px;
     margin-top:10px;
 `
@@ -77,7 +75,6 @@ export const Logo =styled.Image`
     margin:auto;
     border-radius:50px;
     border-width:2px;
-    border-color:${secondary};
     margin-bottom:10px;
     margin-top:10px;
 `

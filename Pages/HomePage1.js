@@ -1,6 +1,6 @@
 import { SelectList } from 'react-native-dropdown-select-list'
-
-import React, { useState } from 'react';
+import axios from "axios";
+import React, { useState,useEffect } from 'react';
 import { SafeAreaView, StyleSheet, TextInput, Button, Text, View, ImageBackground, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -16,24 +16,130 @@ const { height, width } = Dimensions.get("screen");
 export default function HomPage1({ navigation }) {
 
   const [entreprise, setEntreprise] = useState('');
+  const [marque1, setMarque1] = useState('');
   const [marque, setMarque] = useState('');
   const [commune, setCommune] = useState('');
   const [typeSupport, setTypeSupport] = useState('');
   const [surface, setSurface] = useState('');
   const [canal, setCanal] = useState('');
+  const [canal1, setCanal1] = useState('');
   const [etatSupport, setEtatSupport] = useState('');
+  const [etatSupport1, setEtatSupport1] = useState('');
   const [visibilite, setVisibilite] = useState('');
+  const [visibilite1, setVisibilite1] = useState('');
   const [duree, setDuree] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://auditapi.up.railway.app/api/marque/');
+        const formattedData = response.data.results.map((item) => ({
+          key: item.id.toString(),
+          value: item.marque,
+        }));
+        setMarque1(formattedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  
+  useEffect(() => {
+    const fetchData1 = async () => {
+      try {
+        const response = await axios.get('https://auditapi.up.railway.app/api/canal/');
+        const formattedData = response.data.results.map((item) => ({
+          key: item.id.toString(),
+          value: item.canal,
+        }));
+        setCanal1(formattedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData1();
+  }, []);
+  
+  useEffect(() => {
+    const fetchData2 = async () => {
+      try {
+        const response = await axios.get('https://auditapi.up.railway.app/api/etat/');
+        const formattedData = response.data.results.map((item) => ({
+          key: item.id.toString(),
+          value: item.etat,
+        }));
+        setEtatSupport1(formattedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData2();
+  }, []);
+  
+  // useEffect(() => {
+  //   const fetchData4 = async () => {
+  //     try {
+  //       const response = await axios.get('https://auditapi.up.railway.app/api/site/');
+  //       const formattedData = response.data.results.map((item) => ({
+  //         key: item.id.toString(),
+  //         value: item.marque,
+  //       }));
+  //       set(formattedData);
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+
+  //   fetchData4();
+  // }, []);
+  
+  // useEffect(() => {
+  //   const fetchData5 = async () => {
+  //     try {
+  //       const response = await axios.get('https://auditapi.up.railway.app/api/type/');
+  //       const formattedData = response.data.results.map((item) => ({
+  //         key: item.id.toString(),
+  //         value: item.type,
+  //       }));
+  //       setTypeSupport1(formattedData);
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+
+  //   fetchData5();
+  // }, []);
+  
+  useEffect(() => {
+    const fetchData6 = async () => {
+      try {
+        const response = await axios.get('https://auditapi.up.railway.app/api/visibilite/');
+        const formattedData = response.data.results.map((item) => ({
+          key: item.id.toString(),
+          value: item.visibilite,
+        }));
+        setVisibilite1(formattedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData6();
+  }, []);
 
   const entrepri=[
     {key:'1',value:'Commercial'},
     {key:'2',value:'Non Commercial'}
   ]
-  const marq=[
-    {key:'1',value:'Orange'},
-    {key:'2',value:'Moov'},
-    {key:'3',value:'MTN'}
-  ]
+  // const marq=[
+  //   {key:'1',value:'Orange'},
+  //   {key:'2',value:'Moov'},
+  //   {key:'3',value:'MTN'}
+  // ]
   const comm = [
     { key: '1', value: 'Abobo' },
     { key: '2', value: 'Adjamé' },
@@ -59,25 +165,26 @@ export default function HomPage1({ navigation }) {
     {key:'2',value:'Non Commercial'}
   ]
   
-  const canals=[
-    {key:'1',value:'Agence'},
-    {key:'2',value:'Boutique'},
-    {key:'3',value:'Franchise'},
-    {key:'4',value:'Magasin'},
-    {key:'5',value:'Mini Franchise'},
-    {key:'6',value:'Mûr'}
-  ]
-  const etats=[
-    {key:'1',value:'Bon'},
-    {key:'2',value:'Défraichis'},
-    {key:'3',value:'Détérioré'}
-  ]
-  const visibile=[
-    {key:'1',value:'Bonne'},
-    {key:'2',value:'Dégradé'},
-    {key:'3',value:'Moyenne'},
-    {key:'4',value:'Obstruée'}
-  ]
+  // const canals=[
+  //   {key:'1',value:'Agence'},
+  //   {key:'2',value:'Boutique'},
+  //   {key:'3',value:'Franchise'},
+  //   {key:'4',value:'Magasin'},
+  //   {key:'5',value:'Mini Franchise'},
+  //   {key:'6',value:'Mûr'}
+  // ]
+  // const etats=[
+  //   {key:'1',value:'Bon'},
+  //   {key:'2',value:'Défraichis'},
+  //   {key:'3',value:'Détérioré'}
+  // ]
+  // const visibile=[
+  //   {key:'1',value:'Bonne'},
+  //   {key:'2',value:'Dégradé'},
+  //   {key:'3',value:'Moyenne'},
+  //   {key:'4',value:'Obstruée'}
+  // ]
+  
   const navigateToHomePage2 = () => {
     const dataFromHomePage1 = {
       entreprise,
@@ -122,7 +229,7 @@ export default function HomPage1({ navigation }) {
               placeholder='Marque ...'
               placeholderTextColor={Colors.darkText}
               setSelected={(val) => setMarque(val)}
-              data={marq}
+              data={marque1}
               save="value"
               value={marque}
               onChangeText={setMarque}
@@ -161,7 +268,7 @@ export default function HomPage1({ navigation }) {
               placeholder='Canal ...'
               placeholderTextColor={Colors.darkText}
               setSelected={(val) => setCanal(val)}
-              data={canals}
+              data={canal1}
               save="value"
               value={canal}
               onChangeText={setCanal}
@@ -170,7 +277,7 @@ export default function HomPage1({ navigation }) {
               placeholder='Etat support ...'
               placeholderTextColor={Colors.darkText}
               setSelected={(val) => setEtatSupport(val)}
-              data={etats}
+              data={etatSupport1}
               save="value"
               value={etatSupport}
               onChangeText={setEtatSupport}
@@ -179,7 +286,7 @@ export default function HomPage1({ navigation }) {
               placeholder='Visibilité ...'
               placeholderTextColor={Colors.darkText}
               setSelected={(val) => setVisibilite(val)}
-              data={visibile}
+              data={visibilite1}
               save="value"
               value={visibilite}
               onChangeText={setVisibilite}

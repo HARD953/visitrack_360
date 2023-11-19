@@ -51,7 +51,6 @@ export const Avatar =styled.Image`
     margin:auto;
     border-radius:50px;
     border-width:2px;
-    border-color:${secondary};
     margin-bottom:2px;
     margin-top:1px;
 `
@@ -96,7 +95,7 @@ export const StyledFormArea=styled.View`
 
 export const StyledTextInput=styled.TextInput`
     background-color:${secondary};
-    paddind:15px;
+    padding:15px;
     padding-left:55px;
     padding-right:55px;
     border-radius:5px;

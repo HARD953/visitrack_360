@@ -10,19 +10,18 @@ import Font from '../constants/Font';
 import FontSize from '../constants/FontSize';
 import Spacing from '../constants/Spacing';
 
-
 const { height, width } = Dimensions.get("screen");
 
 export default function HomPage2({ navigation,route }) {
   const [emplacementExact, setEmplacementExact] = useState('');
   const [observation, setObservation] = useState('');
-  const [value, setValue] = useState(false); // Pour le commutateur ODP
+  const [value1, setValue] = useState(false); // Pour le commutateur ODP
   const [image, setImage] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [latitude1, setLatitude1] = useState(null);
   const [longitude1, setLongitude1] = useState(null);
-  const [SurfaceODP, setSurfaceODP] = useState(false);
+  const [SurfaceODP, setSurfaceODP] = useState(null);
 
   const data = [
     { key: '1', value: 'Abobo' },
@@ -67,7 +66,7 @@ export default function HomPage2({ navigation,route }) {
     });
 
     if (!result.canceled) {
-      setImage(result.uri);
+      setImage(result.assets[0].uri);
     }
   };
 
@@ -81,7 +80,7 @@ export default function HomPage2({ navigation,route }) {
     });
 
     if (!result.canceled) {
-      setImage(result.uri);
+      setImage(result.assets[0].uri);
     }
   };
   const { dataFromHomePage1 } = route.params
@@ -92,10 +91,10 @@ export default function HomPage2({ navigation,route }) {
       SurfaceODP,
       emplacementExact,
       observation,
-      value,
+      value1,
       image,
-      latitude1,
-      longitude1,
+      latitude,
+      longitude,
     };
     navigation.navigate('RecapPage', { dataFromHomePage1, dataFromHomePage2 });
   };
@@ -118,7 +117,7 @@ export default function HomPage2({ navigation,route }) {
               save="value"
               value={observation}
             /> */}
-            {value && (
+            {value1 && (
             <View style={styles.saisi}>
               <TextInput
                 style={styles.inputs1}
@@ -150,7 +149,7 @@ export default function HomPage2({ navigation,route }) {
               onChangeText={(text) => setObservation(text)}
             />
           </View>
-          <View style={styles.saisi}>
+          {/* <View style={styles.saisi}>
           <TextInput
           style={styles.inputs}
           placeholder="Latitude"
@@ -167,11 +166,11 @@ export default function HomPage2({ navigation,route }) {
           value={longitude1}
           onChangeText={(text) => setLongitude1(text)}
         />
-          </View>
+          </View> */}
           <View style={styles.swi}>
             <Text style={styles.textOPD}>ODP</Text>
             <Switch
-              value={value}
+              value={value1}
               circleSize={27}
               onValueChange={(newValue) => {
                 console.log('Switch value changed to', newValue);
@@ -199,8 +198,8 @@ export default function HomPage2({ navigation,route }) {
           <View style={styles.MapView}>
             <MaterialIcons name="my-location" style={styles.iconeLoc} />
             <View style={styles.coordLoc}>
-              <Text>Latitude : {latitude1}</Text>
-              <Text>Longitude : {longitude1}</Text>
+              <Text>Latitude : {latitude}</Text>
+              <Text>Longitude : {longitude}</Text>
             </View>
             <TouchableOpacity onPress={getLocation} style={styles.getLocationButton}>
               <Text style={styles.getLocationButtonText}>Coordonnée</Text>
@@ -248,12 +247,12 @@ const styless = StyleSheet.create({
     justifyContent:'center'
   },
   imagePreview: {
-    marginBottom:10,
+    marginBottom: 10,
     width: 225,
     height: '95%',
-    resizeMode: '15', // Ajustez la taille de l'image ici
+    resizeMode: 'contain', // Utilisez "contain" ou "cover" en fonction de vos besoins
     marginTop: 20,
-  },
+  },  
   buttonText: {
     fontWeight:'500'
   },

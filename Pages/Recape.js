@@ -3,20 +3,25 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from 'rea
 import { MaterialIcons } from '@expo/vector-icons';
 import axios from 'axios';
 import { AuthContext } from '../Components/globalContext';
+import { encode as base64Encode } from 'base-64';
 
 const RecapPage = ({ navigation, route }) => {
   // Récupérer les données transmises depuis les écrans précédents
   const { dataFromHomePage1, dataFromHomePage2 } = route.params;
-  const { userInfo, splashLoading } = useContext(AuthContext);
+  const latitudeFixed = parseFloat(dataFromHomePage2['latitude']).toFixed(2);
+  const longitudeFixed = parseFloat(dataFromHomePage2['longitude']).toFixed(2);
+  console.log(latitudeFixed)
+  console.log(longitudeFixed)
+  // const { userInfo, splashLoading } = useContext(AuthContext);
 
-  const headers = {
-    'Authorization': `Bearer ${userInfo.access}`,
-  };
+  // const headers = {
+  //   'Authorization': `Bearer ${userInfo.access}`,
+  // };
   const handleSubmit = async () => {
     try {
       const formData = new FormData();
       formData.append('entreprise', dataFromHomePage1['entreprise']);
-      formData.append('Marque', dataFromHomePage1['marque']);
+      formData.append('marque', dataFromHomePage1['marque']);
       formData.append('commune', dataFromHomePage1['commune']);
       formData.append('type_support', dataFromHomePage1['typeSupport']);
       formData.append('surface', dataFromHomePage1['surface']);
@@ -27,28 +32,38 @@ const RecapPage = ({ navigation, route }) => {
       formData.append('duree', dataFromHomePage1['duree']);
       formData.append('description', dataFromHomePage2['emplacementExact']);
       formData.append('observation', dataFromHomePage2['observation']);
-      formData.append('ODP', dataFromHomePage2['value']);
-      formData.append('latitude', dataFromHomePage1['surface']);
-      formData.append('longitude', dataFromHomePage1['surface']);
+      formData.append('ODP', dataFromHomePage2['value1']);
+      formData.append('latitude', latitudeFixed);
+      formData.append('longitude', longitudeFixed);
       
       if (dataFromHomePage2['image']) {
         formData.append('image_support', {
           uri: dataFromHomePage2['image'],
-          type: 'jpeg/png/jpg', // Assurez-vous de spécifier le type MIME correct
-          name: 'imageddd.jpg', // Nom du fichier sur le serveur
+          type: 'image/jpeg', // Assurez-vous de spécifier le type MIME correct
+          name: 'imag.jpg', // Nom du fichier sur le serveur
         });
       }
+
+
       const response = await axios.post(
         'https://auditapi.up.railway.app/api/collectedata/',
         formData,
         {
           headers: {
-            ...headers,
             'Content-Type': 'multipart/form-data',
           },
         }
       );
-      
+
+      // const response = await axios.post(
+      //   'https://auditapi.up.railway.app/api/marque/',
+      //   {"marque":"KOZ1"},
+      //   {
+      //     headers: {
+      //       'Content-Type': 'multipart/form-data',
+      //     },
+      //   }
+      // );
       if (response.status === 200) {
         console.log('Données soumises avec succès');
       }
@@ -112,7 +127,7 @@ const RecapPage = ({ navigation, route }) => {
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.label}>ODP:</Text>
-          <Text style={styles.value}>{dataFromHomePage2["value"] ? 'Oui' : 'Non'}</Text>
+          <Text style={styles.value}>{dataFromHomePage2["value1"] ? 'Oui' : 'Non'}</Text>
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.label}>Latitude:</Text>
