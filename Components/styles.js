@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { View,Text,Image,TextInput,TouchableOpacity,ImageBackground} from "react-native";
 import  Constants  from "expo-constants";
 
 const StatusBarHeight=Constants.StatusBarHeight;

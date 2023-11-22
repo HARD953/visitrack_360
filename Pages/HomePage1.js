@@ -9,7 +9,7 @@ import Colors from '../constants/Colors';
 import Font from "../constants/Font";
 import FontSize from '../constants/FontSize';
 import Spacing from '../constants/Spacing';
-import HomPage2 from './HomePage2';
+
 
 const { height, width } = Dimensions.get("screen");
 

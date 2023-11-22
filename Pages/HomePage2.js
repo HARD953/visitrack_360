@@ -19,8 +19,6 @@ export default function HomPage2({ navigation,route }) {
   const [image, setImage] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const [latitude1, setLatitude1] = useState(null);
-  const [longitude1, setLongitude1] = useState(null);
   const [SurfaceODP, setSurfaceODP] = useState(null);
 
   const data = [
@@ -84,7 +82,6 @@ export default function HomPage2({ navigation,route }) {
     }
   };
   const { dataFromHomePage1 } = route.params
-  console.log(dataFromHomePage1["canal"])
 
   const handleSubmit = () => {
     const dataFromHomePage2 = {
@@ -173,7 +170,6 @@ export default function HomPage2({ navigation,route }) {
               value={value1}
               circleSize={27}
               onValueChange={(newValue) => {
-                console.log('Switch value changed to', newValue);
                 setValue(newValue);
               }}
               activeText=""

@@ -3,15 +3,12 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from 'rea
 import { MaterialIcons } from '@expo/vector-icons';
 import axios from 'axios';
 import { AuthContext } from '../Components/globalContext';
-import { encode as base64Encode } from 'base-64';
 
 const RecapPage = ({ navigation, route }) => {
   // Récupérer les données transmises depuis les écrans précédents
   const { dataFromHomePage1, dataFromHomePage2 } = route.params;
   const latitudeFixed = parseFloat(dataFromHomePage2['latitude']).toFixed(2);
   const longitudeFixed = parseFloat(dataFromHomePage2['longitude']).toFixed(2);
-  console.log(latitudeFixed)
-  console.log(longitudeFixed)
   // const { userInfo, splashLoading } = useContext(AuthContext);
 
   // const headers = {
@@ -44,7 +41,6 @@ const RecapPage = ({ navigation, route }) => {
         });
       }
 
-
       const response = await axios.post(
         'https://auditapi.up.railway.app/api/collectedata/',
         formData,
@@ -64,6 +60,7 @@ const RecapPage = ({ navigation, route }) => {
       //     },
       //   }
       // );
+
       if (response.status === 200) {
         console.log('Données soumises avec succès');
       }
@@ -131,11 +128,11 @@ const RecapPage = ({ navigation, route }) => {
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.label}>Latitude:</Text>
-          <Text style={styles.value}>{dataFromHomePage2["latitude1"]}</Text>
+          <Text style={styles.value}>{latitudeFixed}</Text>
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.label}>Longitude:</Text>
-          <Text style={styles.value}>{dataFromHomePage2["longitude1"]}</Text>
+          <Text style={styles.value}>{longitudeFixed}</Text>
         </View>
         <View style={styles.imageContainer}>
           {dataFromHomePage2["image"] && (

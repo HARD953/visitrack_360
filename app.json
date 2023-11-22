@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Visitrack_360",
-    "slug": "visite",
+    "slug": "visitrackapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/Images/myicon.png",
@@ -42,7 +42,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "2bdf0883-f927-47ac-ae74-d3005609dcda"
+        "projectId": "37a808d9-6773-4fc5-8fca-835a4d6bceff"
       }
     },
     "plugins": [

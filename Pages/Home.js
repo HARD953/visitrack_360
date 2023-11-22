@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Dimensions, SafeAreaView, Text, TouchableOpacity, ScrollView, Button,Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import Colors from '../constants/Colors';
 import FontSize from '../constants/FontSize';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -180,7 +178,8 @@ const styles = StyleSheet.create({
     marginTop: 20, // Ajustez l'espacement du haut selon vos besoins
   },
   statistics: {
-    alignItems: 'center',
+    flexDirection:'row',
+    justifyContent:'space-between',
   },
   statisticsText: {
     fontSize: FontSize.medium,

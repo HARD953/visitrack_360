@@ -1,9 +1,7 @@
 import React, {useState,useContext} from 'react';
 import { Formik } from 'formik';
 import { Octicons, Ionicons,Fontisto } from '@expo/vector-icons';
-import { Button, ImageBackground } from 'react-native';
 import { AuthContext } from '../Components/globalContext';
-import { Text } from 'react-native';
 
 import {
     StyledContainer,
@@ -23,12 +21,9 @@ import {
     Line,
     ExtraText,
     ExtraView,
-    Avatar,
-    TextLink,
-    TextLinkContent
+    Avatar
 } from '../Components/styles';
 import { View } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 
