@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import React, {useContext} from 'react';
 import { StyleSheet} from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../Components/globalContext';
 import HomPage1 from './HomePage1';
@@ -11,8 +11,8 @@ import RecapPage from './Recape';
 import ProfilePage from './Profile';
 import SplashScreens from './Splashsubmit';
 // import YourComponent1 from './Pages/Coordonne';
-
-const Stack = createNativeStackNavigator();
+  
+const Stack = createStackNavigator();
 
 export default function Navigue() {
   const { userInfo,splashLoading }=useContext(AuthContext)

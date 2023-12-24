@@ -7,18 +7,23 @@ import { AuthContext } from '../Components/globalContext';
 const RecapPage = ({ navigation, route }) => {
   // Récupérer les données transmises depuis les écrans précédents
   const { dataFromHomePage1, dataFromHomePage2 } = route.params;
-  const latitudeFixed = parseFloat(dataFromHomePage2['latitude']).toFixed(2);
-  const longitudeFixed = parseFloat(dataFromHomePage2['longitude']).toFixed(2);
-  // const { userInfo, splashLoading } = useContext(AuthContext);
+    const latitude = parseFloat(dataFromHomePage2['latitude']);
+    const longitude = parseFloat(dataFromHomePage2['longitude']);
 
-  // const headers = {
-  //   'Authorization': `Bearer ${userInfo.access}`,
-  // };
+    const latitudeFixed = isNaN(latitude) ? 1 : latitude.toFixed(2);
+    const longitudeFixed = isNaN(longitude) ? 1 : longitude.toFixed(2);
+    
+  const { userInfo, splashLoading } = useContext(AuthContext);
+  console.log(userInfo.access)
+
+  const headers = {
+    'Authorization': `Bearer ${userInfo.access}`,
+  };
   const handleSubmit = async () => {
     try {
       const formData = new FormData();
       formData.append('entreprise', dataFromHomePage1['entreprise']);
-      formData.append('marque', dataFromHomePage1['marque']);
+      formData.append('Marque', dataFromHomePage1['marque']);
       formData.append('commune', dataFromHomePage1['commune']);
       formData.append('type_support', dataFromHomePage1['typeSupport']);
       formData.append('surface', dataFromHomePage1['surface']);
@@ -46,20 +51,11 @@ const RecapPage = ({ navigation, route }) => {
         formData,
         {
           headers: {
+            // ...headers,
             'Content-Type': 'multipart/form-data',
           },
         }
       );
-
-      // const response = await axios.post(
-      //   'https://auditapi.up.railway.app/api/marque/',
-      //   {"marque":"KOZ1"},
-      //   {
-      //     headers: {
-      //       'Content-Type': 'multipart/form-data',
-      //     },
-      //   }
-      // );
 
       if (response.status === 200) {
         console.log('Données soumises avec succès');

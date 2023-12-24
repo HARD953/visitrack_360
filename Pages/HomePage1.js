@@ -16,6 +16,7 @@ const { height, width } = Dimensions.get("screen");
 export default function HomPage1({ navigation }) {
 
   const [entreprise, setEntreprise] = useState('');
+  const [entreprise1, setEntreprise1] = useState('');
   const [marque1, setMarque1] = useState('');
   const [marque, setMarque] = useState('');
   const [commune, setCommune] = useState('');
@@ -46,6 +47,22 @@ export default function HomPage1({ navigation }) {
     fetchData();
   }, []);
   
+  useEffect(() => {
+    const fetchDataR = async () => {
+      try {
+        const response = await axios.get('https://auditapi.up.railway.app/api/entreprise/');
+        const formattedData = response.data.results.map((item) => ({
+          value: item.entreprise,
+        }));
+        setEntreprise1(formattedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchDataR();
+  }, []);
+
   useEffect(() => {
     const fetchData1 = async () => {
       try {
@@ -216,13 +233,15 @@ export default function HomPage1({ navigation }) {
           </View>
           <View style={styles.champ}>
             <View style={styles.saisi} >
-              <TextInput
-                style={styles.inputs}
-                placeholder='Entreprise'
-                placeholderTextColor={Colors.darkText}
-                value={entreprise}
-                onChangeText={setEntreprise}
-              />
+              <SelectList
+              placeholder='Entreprise ...'
+              placeholderTextColor={Colors.darkText}
+              setSelected={(val) => setEntreprise(val)}
+              data={entreprise1}
+              save="value"
+              value={entreprise}
+              onChangeText={setEntreprise}
+            />
             </View>
             <View style={styles.saisi} >
               <SelectList

@@ -90,7 +90,6 @@ export default function Home({ navigation }) {
         <View style={styles.statisticsContainer}>
       <View style={styles.statistics}>
         <Text style={styles.statisticsText}>Statistiques</Text>
-        <Text style={styles.statisticsText}>Statistiques</Text>
         {/* Add your statistics components here */}
       </View>
     </View>

@@ -15,7 +15,6 @@ const Navigators = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      
         {splashLoading ? (
           <Stack.Screen name='splash' component={Splashscreen} />
         ):(userInfo.access ? (
