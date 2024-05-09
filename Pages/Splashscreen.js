@@ -4,7 +4,7 @@ import React from 'react'
 const Splashscreen = () => {
   return (
     <View style={{flex:1,justifyContent:'center',backgroundColor:'blue'}}>
-      <ActivityIndicator size="large" color="green"/>
+      <ActivityIndicator size="small" color="green"/>
     </View>
   )
 }

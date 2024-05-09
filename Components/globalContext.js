@@ -56,23 +56,8 @@ export const AuthProvider =({children})=>{
         AsyncStorage.removeItem('userInfo');
         setUserinfo({});
         setIsLoading(false);
-        // axios.post('https://apidons.herokuapp.com/logout/blacklist/',
-        // {},
-        // {
-        //     headers: {Authorization: `Bearer ${userInfo.access}`},
-        // }).then(res=>{
-        //     console.log(AsyncStorage.getItem('userInfo'))
-        //     console.log(res.data)
-        //     AsyncStorage.removeItem('userInfo');
-        //     setUserinfo({});
-        //     console.log(userInfo)
-        //     setIsLoading(false);
-        // }).catch(e=>{
-        //     console.log(e)
-        //     setIsLoading(false)
-        // })
+
     }
-    
 
     const isLoggedIn= async()=>{
         try{

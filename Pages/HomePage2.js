@@ -9,13 +9,16 @@ import Colors from '../constants/Colors';
 import Font from '../constants/Font';
 import FontSize from '../constants/FontSize';
 import Spacing from '../constants/Spacing';
-
+import { SelectList } from 'react-native-dropdown-select-list'
+import axios from "axios";
 const { height, width } = Dimensions.get("screen");
 
 export default function HomPage2({ navigation,route }) {
   const [emplacementExact, setEmplacementExact] = useState('');
   const [observation, setObservation] = useState('');
   const [value1, setValue] = useState(false); // Pour le commutateur ODP
+  const [value2, setValue2] = useState(false);
+  const [value3, setValue3] = useState(false);
   const [image, setImage] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
@@ -68,6 +71,8 @@ export default function HomPage2({ navigation,route }) {
     }
   };
 
+
+
   const takePhoto = async () => {
     getPermission();
 
@@ -89,6 +94,7 @@ export default function HomPage2({ navigation,route }) {
       emplacementExact,
       observation,
       value1,
+      value3,
       image,
       latitude,
       longitude,
@@ -99,13 +105,8 @@ export default function HomPage2({ navigation,route }) {
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        <View style={styles.appB}>
-          <TouchableOpacity onPress={() => navigation.navigate('HomPage1')}>
-            <MaterialIcons name="chevron-left" style={styles.iconeback} />
-          </TouchableOpacity>
-          <Text style={styles.txt}>Enregistrement 2/2</Text>
-        </View>
         <View style={styles.champ}>
+  
         {/* <SelectList
               placeholder='Commune ...'
               placeholderTextColor={Colors.darkText}
@@ -146,6 +147,7 @@ export default function HomPage2({ navigation,route }) {
               onChangeText={(text) => setObservation(text)}
             />
           </View>
+
           {/* <View style={styles.saisi}>
           <TextInput
           style={styles.inputs}
@@ -165,7 +167,19 @@ export default function HomPage2({ navigation,route }) {
         />
           </View> */}
           <View style={styles.swi}>
-            <Text style={styles.textOPD}>ODP</Text>
+            <Text style={styles.textOPD}>Nouveau ?</Text>
+            <Switch
+              value={value3}
+              circleSize={27}
+              onValueChange={(newValue1) => {
+                setValue3(newValue1);
+              }}
+              activeText=""
+              inActiveText=""
+            />
+          </View>
+          <View style={styles.swi}>
+            <Text style={styles.textOPD}>ODP ?</Text>
             <Switch
               value={value1}
               circleSize={27}
@@ -176,6 +190,55 @@ export default function HomPage2({ navigation,route }) {
               inActiveText=""
             />
           </View>
+          
+          {/* <View style={styles.swi}>
+            <Text style={styles.textOPD}>TTAP</Text>
+            <Switch
+              value={value2}
+              circleSize={27}
+              onValueChange={(newValue1) => {
+                setValue2(newValue1);
+              }}
+              activeText=""
+              inActiveText=""
+            />
+          </View>
+          <View style={styles.swi}>
+            <Text style={styles.textOPD}>TTPAT</Text>
+            <Switch
+              value={value2}
+              circleSize={27}
+              onValueChange={(newValue1) => {
+                setValue2(newValue1);
+              }}
+              activeText=""
+              inActiveText=""
+            />
+          </View>
+          <View style={styles.swi}>
+            <Text style={styles.textOPD}>TAE</Text>
+            <Switch
+              value={value2}
+              circleSize={27}
+              onValueChange={(newValue1) => {
+                setValue2(newValue1);
+              }}
+              activeText=""
+              inActiveText=""
+            />
+          </View>
+          <View style={styles.swi}>
+            <Text style={styles.textOPD}>TAEAT</Text>
+            <Switch
+              value={value2}
+              circleSize={27}
+              onValueChange={(newValue1) => {
+                setValue2(newValue1);
+              }}
+              activeText=""
+              inActiveText=""
+            />
+          </View> */}
           <View style={styles.imView}>
             <View style={styless.buttonsContainer}>
               <TouchableOpacity style={styless.uploadButton} onPress={pickImage}>
@@ -236,7 +299,7 @@ const styless = StyleSheet.create({
   },
   iconeImage: {
     fontSize: 50, // Ajustez la taille de l'icône ici
-    color: '#01579B',
+    color: '#5D6D7E',
   },
   imageContainer: {
     alignItems: 'center',
@@ -294,6 +357,7 @@ const styles = StyleSheet.create({
     borderRadius: Spacing,
     width: "100%",
     height: "85%",
+    borderBottomWidth:2
   },
   inputs1: {
     fontFamily: Font["poppins-regular"],
@@ -303,6 +367,7 @@ const styles = StyleSheet.create({
     borderColor: '#778',
     borderRadius: Spacing,
     width: "100%",
+    borderBottomWidth:2
   },
   textOPD: {
     fontSize: FontSize.large,
@@ -350,7 +415,7 @@ const styles = StyleSheet.create({
     paddingVertical: "2%",
   },
   btn: {
-    backgroundColor: '#01579B', // Couleur bleue
+    backgroundColor: '#5D6D7E', // Couleur bleue
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
@@ -369,7 +434,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   getLocationButton: {
-    backgroundColor: '#01579B', // Couleur bleue
+    backgroundColor: '#5D6D7E', // Couleur bleue
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',

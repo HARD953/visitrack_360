@@ -10,8 +10,8 @@ const RecapPage = ({ navigation, route }) => {
     const latitude = parseFloat(dataFromHomePage2['latitude']);
     const longitude = parseFloat(dataFromHomePage2['longitude']);
 
-    const latitudeFixed = isNaN(latitude) ? 1 : latitude.toFixed(2);
-    const longitudeFixed = isNaN(longitude) ? 1 : longitude.toFixed(2);
+    const latitudeFixed = isNaN(latitude) ? 5.308616: latitude.toFixed(6);
+    const longitudeFixed = isNaN(longitude) ? -4.0176568: longitude.toFixed(6);
     
   const { userInfo, splashLoading } = useContext(AuthContext);
   console.log(userInfo.access)
@@ -32,9 +32,11 @@ const RecapPage = ({ navigation, route }) => {
       formData.append('etat_support', dataFromHomePage1['etatSupport']);
       formData.append('visibilite', dataFromHomePage1['visibilite']);
       formData.append('duree', dataFromHomePage1['duree']);
+      formData.append('quartier', dataFromHomePage1['quartier']);
       formData.append('description', dataFromHomePage2['emplacementExact']);
       formData.append('observation', dataFromHomePage2['observation']);
       formData.append('ODP', dataFromHomePage2['value1']);
+      formData.append('anciennete', dataFromHomePage2['value3']);
       formData.append('latitude', latitudeFixed);
       formData.append('longitude', longitudeFixed);
       
@@ -53,6 +55,7 @@ const RecapPage = ({ navigation, route }) => {
           headers: {
             // ...headers,
             'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${userInfo.access}`
           },
         }
       );
@@ -123,6 +126,10 @@ const RecapPage = ({ navigation, route }) => {
           <Text style={styles.value}>{dataFromHomePage2["value1"] ? 'Oui' : 'Non'}</Text>
         </View>
         <View style={styles.infoContainer}>
+          <Text style={styles.label}>Ancienneté:</Text>
+          <Text style={styles.value}>{dataFromHomePage2["value3"] ? 'Oui' : 'Non'}</Text>
+        </View>
+        <View style={styles.infoContainer}>
           <Text style={styles.label}>Latitude:</Text>
           <Text style={styles.value}>{latitudeFixed}</Text>
         </View>
@@ -176,7 +183,7 @@ const styles = StyleSheet.create({
 
   },
   submitButton: {
-    backgroundColor: '#007AFF', // Couleur du bouton
+    backgroundColor: '#5D6D7E', // Couleur du bouton
     borderRadius: 10,
     flexDirection: 'row',
     alignItems: 'center',

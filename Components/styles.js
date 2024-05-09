@@ -54,7 +54,7 @@ export const Avatar =styled.Image`
     margin-top:1px;
 `
 export const WelcomeImage=styled.Image`
-    height:50%;
+    height:50%; 
     min-width:100%;
 
 `
@@ -69,7 +69,6 @@ export const PageTitle=styled.Text`
     
     color: ${bluec};
  
-    
     ${(props)=>props.welcome && `
         font-size: 35px;
     `}
@@ -108,7 +107,7 @@ export const StyledTextInput=styled.TextInput`
 `;
 
 export const StyledInputLabel = styled.Text`
-    color:white;
+    color:'#A93226';
     font-weight:bold;
     font-size:13px;
     text-align: left;

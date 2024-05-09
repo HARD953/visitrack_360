@@ -1,122 +1,236 @@
-import React, {useState,useContext} from 'react';
-import { Formik } from 'formik';
-import { Octicons, Ionicons,Fontisto } from '@expo/vector-icons';
+import React, { useState ,useContext} from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Modal, Button } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from '../Components/globalContext';
 
-import {
-    StyledContainer,
-    InnerContainer,
-    PageLogo,
-    PageTitle,
-    SubTitle,
-    StyledFormArea,
-    LeftIcon,
-    StyledInputLabel,
-    StyledTextInput,
-    RightIcon,
-    Colors,
-    ButtonText,
-    StyledButton,
-    MsBox,
-    Line,
-    ExtraText,
-    ExtraView,
-    Avatar
-} from '../Components/styles';
-import { View } from 'react-native';
-import Spinner from 'react-native-loading-spinner-overlay/lib';
+const LoginPage = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [isForgotPasswordModalVisible, setIsForgotPasswordModalVisible] = useState(false);
+  const [resetPasswordConfirmation, setResetPasswordConfirmation] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const { loading,login }=useContext(AuthContext)
 
+  const handleLogin = () => {
+    console.log('Email:', email);
+    console.log('Password:', password);
+  };
 
-const {brand,darkLight, primary,black}=Colors;
+  const handleForgotPassword = () => {
+    setIsForgotPasswordModalVisible(true);
+  };
 
-const Login = ({ navigation }) => {
-    const [hidePassword,setHidePassword]=useState(true);
-    const [password,setPassword]=useState(null);
-    const [email,setEmail]=useState(null);
-    const { loading,login }=useContext(AuthContext)
+  const showModal = (message) => {
+    setModalMessage(message);
+    setIsModalVisible(true);
+  };
+
+  const hideModal = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleResetPassword = async () => {
+    try {
+      // Logique de réinitialisation du mot de passe ici...
+
+      // Si la réinitialisation réussit :
+      showModal('Réinitialisation du mot de passe réussie !');
+    } catch (error) {
+      console.error('Erreur lors de la réinitialisation du mot de passe :', error);
+      // Si la réinitialisation échoue :
+      showModal('Échec de la réinitialisation du mot de passe');
+    }
+  };
+
   return (
-    <StyledContainer resizeMode="cover" source={require('../assets/Images/AdobeStock_229865638.jpg')}>
-        <InnerContainer >
-            <PageTitle>Souriez A La Vie</PageTitle>
-            <SubTitle>Account Login</SubTitle>
-            <Avatar resizeMode="cover" source={require('../assets/Images/audi.png')} />
-            <Formik
-            initialValues={{ email:'',password:'',}}
-            onSubmit={(values)=>{
-                console.log(values);
-            }}
-            >
-            {({ handleChange, handleBlur, handleSubmit, values }) =>(
-            <StyledFormArea>
-                <Spinner  />
-                <MyTextInput
-                    label="Email Address"
-                    icon="mail"
-                    placeholder="issa@gmail.com"  
-                    placeholderTextColor={darkLight} 
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    value={values.email}
-                    keyboardType="email-address"
-                />
-                <MyTextInput
-                    label="Password"
-                    icon="lock"
-                    placeholder="* * * * * * * * * * * * "  
-                    placeholderTextColor={darkLight} 
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
-                    secureTextEntry={hidePassword}
-                    isPassword={true}
-                    setHidePassword={setHidePassword}
-                />
-                <MsBox>...</MsBox> 
-                <StyledButton  onPress={()=>{login(values.email,values.password)}}>
-                    <ButtonText>
-                        Se Connecter
-                    </ButtonText>
-                </StyledButton>
-                <Line />
-                <StyledButton google={true} onPress={handleSubmit}>
-                    <Fontisto name='google' color={primary} size={17} />
-                    <ButtonText google={true}>
-                        Identifiant Oublier
-                    </ButtonText >
-                </StyledButton>
-                <ExtraView>
-                <ExtraText>La vie est un don et il faut la préserver </ExtraText>
-                    {/* <TextLink>
-                        <TextLinkContent>SignUp</TextLinkContent>
-                    </TextLink> */}
-                </ExtraView>
-                
-                </StyledFormArea>)}
-            </Formik>
-        </InnerContainer>
-    </StyledContainer>
-    // <View style={{justifyContent:'center',alignItems:'center',marginTop:50}}>
-    //     <Spinner visible={loading} />
-    //     <TextInput value={email} onChangeText={text=>setEmail(text)} placeholder='email' />
-    //     <TextInput value={password} onChangeText={text=>setPassword(text)} placeholder='password' secureTextEntry/>
-    //     <Button title='Login' onPress={()=>{login(email,password)}}/>
-    // </View>
+    <ImageBackground source={require('../assets/Images/back10.png')} style={styles.backgroundImage}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Audit de visibilité</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            placeholderTextColor="black"
+            onChangeText={(text) => setEmail(text)}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Mot de passe"
+            secureTextEntry={!showPassword}
+            placeholderTextColor="black"
+            onChangeText={(text) => setPassword(text)}
+          />
+          <TouchableOpacity
+            style={styles.showPasswordIcon}
+            onPress={() => setShowPassword(!showPassword)}
+          >
+            <Icon name={showPassword ? 'eye-off' : 'eye'} size={20} color="black" />
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.loginButton} onPress={()=>{login(email,password)}}>
+          <Text style={styles.buttonText}>Connexion</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleForgotPassword}>
+          <Text style={styles.forgotPassword}>Mot de passe oublié ?</Text>
+        </TouchableOpacity>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={isForgotPasswordModalVisible}
+          onRequestClose={() => setIsForgotPasswordModalVisible(false)}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              {!resetPasswordConfirmation ? (
+                <>
+                  <Text style={styles.modalText}>Veuillez saisir votre numéro de téléphone :</Text>
+                  <TextInput
+                    style={styles.input1}
+                    placeholder="Numéro de téléphone"
+                    keyboardType="numeric"
+                    placeholderTextColor="black"
+                  />
+                  <View style={styles.modalButtons}>
+                    <Button title="Annuler" onPress={() => setIsForgotPasswordModalVisible(false)} />
+                    <Button title="Confirmer"  />
+                  </View>
+                </>
+              ) : (
+                <Text style={styles.modalText}>Votre mot de passe a été réinitialisé avec succès !</Text>
+              )}
+            </View>
+          </View>
+        </Modal>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={isModalVisible}
+          onRequestClose={hideModal}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text>{modalMessage}</Text>
+              <TouchableOpacity onPress={hideModal}>
+                <Text>Fermer</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </View>
+    </ImageBackground>
   );
-}
-const  MyTextInput = ({ label, icon,isPassword,hidePassword,setHidePassword, ...props })=>{
-    return (
-         <View>
-            <LeftIcon>
-                <Octicons name={icon} size={20} color={black}/>
-            </LeftIcon>
-            <StyledInputLabel>{label}</StyledInputLabel>
-            <StyledTextInput {...props} />
-            {isPassword && (
-                <RightIcon onPress={()=>setHidePassword(!hidePassword)}>
-                    <Ionicons name={ hidePassword ? 'md-eye-off' : 'md-eye' } size={20} color={darkLight} />
-                </RightIcon>
-            )}
-         </View> 
-    );
 };
-export default Login;
+
+const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 24,
+    color: '#2E4053',
+  },
+  inputContainer: {
+    width: '100%',
+    marginBottom: 25,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    borderColor: '#3949AB',
+    borderBottomWidth: 2,
+    borderRadius: 8,
+    paddingLeft: 8,
+    color: 'black',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  input1: {
+    flex: 1,
+    height: 100,
+    borderColor: '#3949AB',
+    borderBottomWidth: 2,
+    borderRadius: 8,
+    paddingLeft: 8,
+    color: 'black',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  showPasswordIcon: {
+    padding: 0,
+    margin: 0,
+  },
+  loginButton: {
+    backgroundColor: '#3F51B5',
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 24,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  forgotPassword: {
+    marginTop: 16,
+    color: '#2E4053',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fond semi-transparent
+  },
+  modalView: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+    alignItems: 'center',
+    width: '80%',
+    height: '20%',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    marginTop: 15,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+  },
+});
+
+export default LoginPage;

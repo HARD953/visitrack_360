@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useContext} from 'react';
-import { StyleSheet} from 'react-native';
+import { StyleSheet,View,Text} from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../Components/globalContext';
@@ -10,40 +10,56 @@ import Home from './Home';
 import RecapPage from './Recape';
 import ProfilePage from './Profile';
 import SplashScreens from './Splashsubmit';
+import TabBar from './TabBar';
+import Voir from './Voir';
+import LoginPage from './LoginPage';
 // import YourComponent1 from './Pages/Coordonne';
   
 const Stack = createStackNavigator();
 
-export default function Navigue() {
-  const { userInfo,splashLoading }=useContext(AuthContext)
+
+const CustomHeaderTitle = ({ title }) => (
+  <View style={styles.headerTitleContainer}>
+    <Text style={styles.headerTitle}>{title}</Text>
+  </View>
+);
+
+export default function Navigue({ navigation }) {
+  const { loading,logout }=useContext(AuthContext)
+
   return (
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={Home} options={({ navigation }) => ({
-                        title: 'Lanfiatech',
-                        headerStyle: {
-                        backgroundColor: '#236198',
-                        },
-                        headerTintColor: 'white',
-                        headerTitleStyle: {
-                        fontWeight: 'bold',
-                        },
-                        headerRight: () => (
-                        <Ionicons
-                            name="ios-archive"
-                            size={30}
-                            color="white"
-                            style={{ marginRight: 20 }}
-                            onPress={() => {
-                            // Ajoutez ici la logique que vous souhaitez exécuter lorsque l'icône est pressée
-                    }}
-                />
-                ),
-        })}
-  />
+        <Stack.Screen name="LoginPage" component={LoginPage} options={{ headerShown: false }}/>
+        <Stack.Screen 
+          name="Home"
+          component={Home}
+          options={({ navigation }) => ({
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: '#5D6D7E',
+              },
+            headerTintColor: '#5D6D7E',
+            headerRight: () => (
+              <Ionicons
+                name="log-out" 
+                size={30}
+                color="#D0D3D4"
+                style={{ marginRight: 20 }}
+                onPress={() => {
+                  logout()
+                }}
+              />
+            ),
+            headerLeft: () => (
+              <Text style={styles.headerTitle}> Visitrack 360 </Text>
+            ),
+          })}
+        />
         <Stack.Screen name="HomPage1" component={HomPage1} options={({ navigation }) => ({
-                      
+                        title: 'Visitrack360',
+                        headerShown: true,
                         headerStyle: {
-                        backgroundColor: '#236198',
+                        backgroundColor: '#5D6D7E',
                         },
                         headerTintColor: 'white',
                         headerTitleStyle: {
@@ -51,12 +67,12 @@ export default function Navigue() {
                         },
                         headerRight: () => (
                         <Ionicons
-                            name="ios-archive"
+                            name="log-out"
                             size={30}
                             color="white"
                             style={{ marginRight: 20 }}
                             onPress={() => {
-                            // Ajoutez ici la logique que vous souhaitez exécuter lorsque l'icône est pressée
+                              logout()
                     }}
                 />
                 ),
@@ -64,7 +80,7 @@ export default function Navigue() {
         <Stack.Screen name="HomPage2" component={HomPage2} options={({ navigation }) => ({
                         title: 'Lanfiatech',
                         headerStyle: {
-                        backgroundColor: '#236198',
+                        backgroundColor: '#5D6D7E',
                         },
                         headerTintColor: 'white',
                         headerTitleStyle: {
@@ -72,21 +88,21 @@ export default function Navigue() {
                         },
                         headerRight: () => (
                         <Ionicons
-                            name="ios-archive"
+                            name="log-out"
                             size={30}
                             color="white"
                             style={{ marginRight: 20 }}
                             onPress={() => {
-                            // Ajoutez ici la logique que vous souhaitez exécuter lorsque l'icône est pressée
+                            logout()
                     }}
                 />
                 ),
         })}/>
         <Stack.Screen name="RecapPage" component={RecapPage} options={({ navigation }) => ({
                         
-                        title: 'Lanfiatech',
+                        title: 'RecapPage',
                         headerStyle: {
-                        backgroundColor: '#236198',
+                        backgroundColor: '#5D6D7E',
                         },
                         headerTintColor: 'white',
                         headerTitleStyle: {
@@ -94,12 +110,12 @@ export default function Navigue() {
                         },
                         headerRight: () => (
                         <Ionicons
-                            name="ios-archive"
+                            name="log-out"
                             size={30}
                             color="white"
                             style={{ marginRight: 20 }}
                             onPress={() => {
-                            // Ajoutez ici la logique que vous souhaitez exécuter lorsque l'icône est pressée
+                            logout()
                     }}
                 />
                 ),
@@ -107,70 +123,51 @@ export default function Navigue() {
         <Stack.Screen name="ProfilePage" component={ProfilePage} options={({ navigation }) => ({
                         title: 'Lanfiatech',
                         headerStyle: {
-                        backgroundColor: '#236198',
+                        backgroundColor: '#5D6D7E',
                         },
                         headerTintColor: 'white',
                         headerTitleStyle: {
                         fontWeight: 'bold',
                         },
+                        
                         headerRight: () => (
                         <Ionicons
-                            name="ios-archive"
+                            name="log-out"
                             size={30}
                             color="white"
                             style={{ marginRight: 20 }}
                             onPress={() => {
-                            // Ajoutez ici la logique que vous souhaitez exécuter lorsque l'icône est pressée
+                            logout()
                     }}
                 />
+                
                 ),
         })}/>
-        <Stack.Screen name="SplashScreens" component={SplashScreens} options={{ headerShown: false }}/>
-        {/* <Stack.Screen name="LogPage" component={LogPage} options={{ headerShown: false }}/>
-        <Stack.Screen name="Home" component={Home} options={({ navigation }) => ({
-            title: 'Ma Page d\'Accueil',
-            headerStyle: {
-              backgroundColor: 'dodgerblue',
-            },
-            headerTintColor: 'white',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-            headerRight: () => (
-              <Ionicons
-                name="ios-archive"
-                size={30}
-                color="white"
-                style={{ marginRight: 20 }}
-                onPress={() => {
-                  // Ajoutez ici la logique que vous souhaitez exécuter lorsque l'icône est pressée
-            }}
-      />
-    ),
-  })}/>
-        <Stack.Screen name="RecapPage" component={RecapPage} options={({ navigation }) => ({
-              title: 'Ma Page d\'Accueil',
-              headerStyle: {
-                backgroundColor: 'dodgerblue',
-              },
-              headerTintColor: 'white',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-              headerRight: () => (
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('HomPage1')}
-                >
-                <Ionicons
-                  name="ios-archive"
-                  size={30}
-                  color="white"
-                  style={{ marginRight: 20 }}
+        <Stack.Screen name="Voir" component={Voir} options={({ navigation }) => ({
+                        title: 'Lanfiatech',
+                        headerStyle: {
+                        backgroundColor: '#5D6D7E',
+                        },
+                        headerTintColor: 'white',
+                        headerTitleStyle: {
+                        fontWeight: 'bold',
+                        },
+                        
+                        headerRight: () => (
+                        <Ionicons
+                            name="log-out"
+                            size={30}
+                            color="white"
+                            style={{ marginRight: 20 }}
+                            onPress={() => {
+                            logout()
+                    }}
                 />
-                </TouchableOpacity>
-              ),
-            })}
-            />*/}
+                
+                ),
+        })}/>
+        
+        <Stack.Screen name="SplashScreens" component={SplashScreens} options={{ headerShown: false }}/>
       </Stack.Navigator> 
   );
 }
@@ -182,6 +179,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  headerTitleContainer: {
+    // Ajoutez un décalage à gauche selon votre préférence
+    justifyContent:'flex-start'
+  },
+  headerTitle: {
+    fontSize: 18, // Ajustez la taille de la police selon votre préférence
+    fontWeight: 'bold',
+    color: '#D0D3D4',
+    marginLeft:15
+  },
 });
-
-

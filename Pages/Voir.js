@@ -31,7 +31,7 @@ import { AuthContext } from '../Components/globalContext';
 
 const { height, width } = Dimensions.get("screen");
 
-const Home = ({ navigation }) => {
+const Voir = ({ navigation }) => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [mapVisible, setMapVisible] = useState(true);
   const [elementsRecenses, setElementsRecenses] = useState([]);
@@ -57,6 +57,7 @@ const Home = ({ navigation }) => {
     }));
   };
   
+
   const patchData = async (id, updatedData) => {
     try {
       await axios.patch(`https://auditapi.up.railway.app/api/donneescollectees/${id}/`, updatedData, {
@@ -72,6 +73,7 @@ const Home = ({ navigation }) => {
     }
   };
   
+
   // Function to handle saving changes
   const handleSave = async () => {
     if (selectedElement) {
@@ -83,7 +85,7 @@ const Home = ({ navigation }) => {
           updatedData[key] = selectedElement[key];
         }
       });
-      console.log(updatedData)
+  
       // Si aucun champ n'a été modifié, ne pas envoyer la requête PATCH
       if (Object.keys(updatedData).length === 0) {
         console.log('Aucune modification détectée.');
@@ -94,6 +96,7 @@ const Home = ({ navigation }) => {
       setModalVisible(false);
     }
   };
+  
   const openEditDialog = (element) => {
     setSelectedElement(element);
     setModalVisible(true);
@@ -102,7 +105,7 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://auditapi.up.railway.app/api/agent/', {
+        const response = await axios.get('https://auditapi.up.railway.app/api/donneescollecteesall/', {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -126,7 +129,7 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://auditapi.up.railway.app/api/statbyetat/', {
+        const response = await axios.get('https://auditapi.up.railway.app/api/statbyetatall/', {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -195,7 +198,7 @@ const Home = ({ navigation }) => {
           <View style={styles.mapContainer}>
             {mapVisible ? (
               <View style={styles.imageView}>
-                  <Text style={[styles.collecte,{'fontWeight':'800'}]}>Nombre de support collecté</Text>
+                  <Text style={[styles.collecte,{'fontWeight':'500'}]}>Nombre de support collecter</Text>
                   <Text style={[styles.collecte,{'fontWeight':'800'}]}>{etatRecenses["nombre_support_total"]}</Text>
                   {/* <View style={styles.rowCarre}>
                       <View style={styles.carre}>
@@ -255,11 +258,11 @@ const Home = ({ navigation }) => {
           </View>
 
           {/* Action Boxes */}
-          <View style={styles.row}>
+          {/* <View style={styles.row}>
             <View style={styles.rightView}>
               <TouchableActionBox
                 onPress={() => navigation.navigate('HomPage1')}
-                icon="basket-outline"
+                icon="ios-albums"
                 text="Collecte"
               />
             </View>
@@ -270,12 +273,11 @@ const Home = ({ navigation }) => {
                 text="Localisation"
               />
             </View>
-          </View>
+          </View> */}
 
           {/* Voir Tout Button */}
-          <TouchableOpacity style={styles.button}  onPress={() => navigation.navigate('Voir')}>
-            <Text style={styles.buttonText}>Aujourd'hui </Text>
-            <Text style={styles.buttonText}>Voir tout  </Text>
+          <TouchableOpacity style={styles.button} onPress={() => console.log('Voir Tout pressed')}>
+            <Text style={styles.buttonText}>Support </Text>
           </TouchableOpacity>
           {/* Elements Recenses */}
           <View style={styles.elementsRecensesContainer}>
@@ -337,7 +339,7 @@ const Home = ({ navigation }) => {
 const TouchableActionBox = ({ onPress, icon, color, text }) => (
   <TouchableOpacity onPress={onPress} style={[styles.box, { backgroundColor: color }]}>
     <View style={styles.iconContainer}>
-      <Ionicons name={icon} size={50} color="#607D8B"/>
+      <Ionicons name={icon} size={50} color="#2980B9" />
     </View>
     <Text style={styles.boxText}>{text}</Text>
   </TouchableOpacity>
@@ -346,7 +348,7 @@ const TouchableActionBox = ({ onPress, icon, color, text }) => (
 const TouchableActionBox1 = ({ onPress, icon, color, text,data }) => (
   <TouchableOpacity onPress={onPress} style={[styles.box1, { backgroundColor: color }]}>
     <View>
-      <Ionicons name={icon} size={20} color="white" /> 
+      <Ionicons name={icon} size={20} color="white" />
     </View>
     <Text style={styles.boxText1}>{data}</Text>
     <Text style={styles.boxText1}>{text }</Text>
@@ -455,14 +457,16 @@ const ElementEditForm = ({ selectedElement, handleEdit, handleSave, closeModal,i
       alert('Permission to access camera roll is required!');
       return;
     }
-    
+
     const pickerResult = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],
     });
+
     if (pickerResult.cancelled === true) {
       return;
     }
+
     setNewImageUri(pickerResult.uri);
   };
 
@@ -475,6 +479,7 @@ const ElementEditForm = ({ selectedElement, handleEdit, handleSave, closeModal,i
    return (
   <View style={styles.inputContainer}>
     {/* First Column */}
+
     <View style={styles.column}>
       <TextInput
         style={styles.inputField}
@@ -556,7 +561,7 @@ const ElementEditForm = ({ selectedElement, handleEdit, handleSave, closeModal,i
 
     {/* Save and Cancel Buttons */}
     <View style={styles.buttonContainer}>
-    <TouchableOpacity style={styles.editButton} onPress={handleSave} >
+    <TouchableOpacity style={styles.editButton} >
       <Text style={styles.editButtonText}>Save</Text>
     </TouchableOpacity>
     <TouchableOpacity style={styles.cancelButton} onPress={closeModal}>
@@ -574,472 +579,472 @@ const ElementEditForm = ({ selectedElement, handleEdit, handleSave, closeModal,i
 )};
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor:'#EBF5FB'
-    },
-    button: {
-      flexDirection:'row',
-      justifyContent:'space-between',
-      paddingVertical: 8,
-      paddingHorizontal: 16,
-      borderRadius: 8,
-    },
-    buttonText: {
-      color: '#154360',
-      fontWeight:'600',
-      fontSize: FontSize.medium,
-    },
-  loadingContainer: {
+  container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor:'#EBF5FB'
   },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  errorText: {
-    fontSize: FontSize.medium,
-    color: 'red',
-  },
-  scrollViewContainer: {
-    flexGrow: 1,
-    paddingBottom: 20,
-  },
-  mapContainer: {
-    height: '28%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  map: {
-    width: '100%',
-    height: '100%',
-  },
-  imageView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    // backgroundColor:'#154360',
-    backgroundColor:'#D0D3D4',
-    width:'97%',
-    borderWidth:0,
-    marginVertical:10,
-    borderRadius:Spacing,
-    borderColor:'#1ABC9C',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 3.84,
-    elevation: 2, // Pour Android
-  },
-  collecte: {
-    fontSize: 15,
-    fontWeight:'bold',
-    color:'#2E4053',
-    marginBottom:10
-  },
-  carouselContainer: {
-    flex: 1,
-  },
-  carouselImage: {
-    height: '100%',
-    width: '96%',
-    marginLeft: '2%',
-    marginRight: '2%',
-    marginTop: '1%',
-    borderRadius: 7,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '97%',
-    margin: 10,
-    height:'20%'
-  },
-  rightView: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 10,
-    borderColor: '#1F618D', // Ajout du borderColor
-    borderWidth: 0, // Ajout de la largeur de la bordure
-    borderRadius:10,
-    backgroundColor:'white',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5, // Pour Android
-  },
-  rightViewB: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 5,
-    borderColor: 'cyan', // Ajout du borderColor
-    borderWidth: 0, // Ajout de la largeur de la bordure
-    borderRadius:10,
-    backgroundColor:'white',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5, // Pour Android
-  },
-
-  direct:{
+  button: {
     flexDirection:'row',
-    width:'70%',
-    height:'30%',
+    justifyContent:'space-between',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
   },
-  // rowCarre: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   alignItems: 'center',
-  //   width: '25%',
-  //   margin: 10,
-  //   height:'25%'
-  // },
-  carre: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 5,
-    borderColor: '#607D8B', // Ajout du borderColor
-    borderWidth: 0,
-    // borderColor: 'green', // Ajout du borderColor
-    // borderWidth: 2, // Ajout de la largeur de la bordure
-    borderRadius:10,
-    backgroundColor:'#795548',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-      },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5, // Pour Android
-  },
-
-  carre1: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 5,
-    borderColor: '#607D8B', // Ajout du borderColor
-    borderWidth: 0,
-    // borderColor: 'green', // Ajout du borderColor
-    // borderWidth: 2, // Ajout de la largeur de la bordure
-    borderRadius:10,
-    backgroundColor:'#F8C471',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-      },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5, // Pour Android
-  },
-  carre2: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 5,
-    borderColor: '#607D8B', // Ajout du borderColor
-    borderWidth: 0,
-    // borderColor: 'green', // Ajout du borderColor
-    // borderWidth: 2, // Ajout de la largeur de la bordure
-    borderRadius:10,
-    backgroundColor:'#D35400',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-      },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5, // Pour Android
-  },
-  spaceBetween: {
-    justifyContent: 'space-between',
-  },
-  box: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 10,
-    overflow: 'hidden',
-    backgroundColor: '#099138',
-    borderRadius: Spacing,
-  },
-  box1: {
-    width: '115%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 10,
-    overflow: 'hidden',
-    backgroundColor: 'black',
-    borderRadius: 50,
-  },
-  iconContainer: {
-    borderRadius: Spacing,
-    backgroundColor: 'white',
-    padding: 10,
-    marginBottom: 10,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-      },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5, // Pour Android
-  
-  },
-  boxRed: {
-    backgroundColor: '#055093',
-  },
-  boxText: {
-    color: 'black',
-    fontSize: FontSize.medium,
-    marginTop: 5,
-  },
-  boxText1: {
-    color: 'white',
-    fontSize: 14,
-    marginTop: 2,
-    fontWeight:'600'
-  },
-  elementsRecensesContainer: {
-    justifyContent: 'flex-end', // Aligner à droite
-  },
-  buttonContainer: {
-    marginRight: 'auto', // Mettre à gauche autant que possible pour pousser le bouton à droite
-  },
-
-  elementsRecensesText: {
-    fontSize: FontSize.medium,
-    fontWeight: 'bold',
-    color: '#141716',
-    marginBottom: 10,
-  },
-  elementRecense: {
-    backgroundColor: '#ECEFF1',
-    borderRadius: 5,
-    padding: 10,
-    marginLeft:15,
-    elevation: 3,
-    borderWidth: 0,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.50,
-    shadowRadius: 3.84,
-    elevation: 5, // Pour Android
-  },
-  recenseImage: {
-    width: 200,
-    height: 100,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  detailRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 15, // Ajouter un espacement entre chaque paire de détails
-    borderWidth: 0, // Ajouter une bordure basse
-  },
-  detailLabel: {
-    fontSize: FontSize.medium,
-    fontWeight: 'bold',
+  buttonText: {
     color: '#154360',
-    marginRight: 10, // Ajouter un espacement entre l'étiquette et la valeur
-  },
-  detailValue: {
+    fontWeight:'600',
     fontSize: FontSize.medium,
-    color: '#141716',
   },
-  detailsContainer: {
-    marginTop: 10,
+loadingContainer: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+errorContainer: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+errorText: {
+  fontSize: FontSize.medium,
+  color: 'red',
+},
+scrollViewContainer: {
+  flexGrow: 1,
+  paddingBottom: 20,
+},
+mapContainer: {
+  height: '28%',
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+map: {
+  width: '100%',
+  height: '100%',
+},
+imageView: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  // backgroundColor:'#154360',
+  backgroundColor:'#2E4053',
+  width:'97%',
+  borderWidth:0,
+  marginVertical:10,
+  borderRadius:Spacing,
+  borderColor:'#1ABC9C',
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 2,
   },
-  detailText: {
-    fontSize: FontSize.small,
-    fontWeight:'800',
-    marginBottom: 10,
-    borderBottomWidth: 2,
-    paddingBottom: 5,
+  shadowOpacity: 0.5,
+  shadowRadius: 3.84,
+  elevation: 2, // Pour Android
+},
+collecte: {
+  fontSize: 15,
+  fontWeight:'bold',
+  color:'white',
+  marginBottom:10
+},
+carouselContainer: {
+  flex: 1,
+},
+carouselImage: {
+  height: '100%',
+  width: '96%',
+  marginLeft: '2%',
+  marginRight: '2%',
+  marginTop: '1%',
+  borderRadius: 7,
+},
+row: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  width: '97%',
+  margin: 10,
+  height:'20%'
+},
+rightView: {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginRight: 10,
+  borderColor: '#1F618D', // Ajout du borderColor
+  borderWidth: 0, // Ajout de la largeur de la bordure
+  borderRadius:10,
+  backgroundColor:'white',
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 2,
   },
-  inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  elevation: 5, // Pour Android
+},
+rightViewB: {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginRight: 5,
+  borderColor: 'cyan', // Ajout du borderColor
+  borderWidth: 0, // Ajout de la largeur de la bordure
+  borderRadius:10,
+  backgroundColor:'white',
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 2,
   },
-  
-  column: {
-    flex: 1,
-    marginRight: 10, // Espace entre les colonnes
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    
-  },
-  
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
-    width: '80%',
-    flexDirection: 'column', // Utilisez flexDirection: 'column' pour disposer les éléments en colonnes
-    alignItems: 'center', // Alignez les éléments au centre de la colonne
-    width:'95%',
-  },
-  
-  modalTitle: {
-    fontSize: FontSize.large,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  
-  inputField: {
-    width: '100%',
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 10,
-    paddingLeft: 10,
-  },
-  
-  editButton: {
-    backgroundColor: '#099138',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    marginTop: 10,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  
-  editButtonText: {
-    color: 'white',
-    fontSize: FontSize.medium,
-    fontWeight: 'bold',
-  },
-  
-  cancelButton: {
-    backgroundColor: '#FF5733',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    marginTop: 10,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  
-  cancelButtonText: {
-    color: 'white',
-    fontSize: FontSize.medium,
-    fontWeight: 'bold',
-  },
-  googleButton: {
-    backgroundColor: '#4285F4',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    elevation: 3, // Pour l'ombre sur Android
-    shadowColor: '#000', // Ombre sur iOS
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  
-  googleButtonText: {
-    color: 'white',
-    fontSize: FontSize.medium,
-    fontWeight: 'bold',
-  },
-  modalImage: {
-    width: 100, // Ajustez en fonction de vos besoins
-    height: 100, // Ajustez en fonction de vos besoins
-    borderRadius: 5,
-    marginTop: 10,
-  },
-  editImageButton: {
-    backgroundColor: '#3498db',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    marginTop: 10,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  elevation: 5, // Pour Android
+},
 
-  editImageButtonText: {
-    color: 'white',
-    fontSize: FontSize.medium,
-    fontWeight: 'bold',
-  },
+direct:{
+  flexDirection:'row',
+  width:'70%',
+  height:'30%',
+},
+// rowCarre: {
+//   flexDirection: 'row',
+//   justifyContent: 'space-between',
+//   alignItems: 'center',
+//   width: '25%',
+//   margin: 10,
+//   height:'25%'
+// },
+carre: {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginHorizontal: 5,
+  borderColor: '#607D8B', // Ajout du borderColor
+  borderWidth: 0,
+  // borderColor: 'green', // Ajout du borderColor
+  // borderWidth: 2, // Ajout de la largeur de la bordure
+  borderRadius:10,
+  backgroundColor:'#795548',
+  shadowOffset: {
+    width: 0,
+    height: 2,
+    },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  elevation: 5, // Pour Android
+},
 
-  infoBox: {
-    backgroundColor: '#3498db', // Couleur de fond de la boîte d'informations
-    padding: 10, // Rembourrage interne de la boîte d'informations
-    borderRadius: 8, // Bordure arrondie de la boîte d'informations
-    alignItems: 'center', // Alignement du contenu au centre
-    justifyContent: 'center', // Alignement du contenu au centre
-    marginBottom: 10, // Marge inférieure pour espacement
+carre1: {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginHorizontal: 5,
+  borderColor: '#607D8B', // Ajout du borderColor
+  borderWidth: 0,
+  // borderColor: 'green', // Ajout du borderColor
+  // borderWidth: 2, // Ajout de la largeur de la bordure
+  borderRadius:10,
+  backgroundColor:'#F8C471',
+  shadowOffset: {
+    width: 0,
+    height: 2,
+    },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  elevation: 5, // Pour Android
+},
+carre2: {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginHorizontal: 5,
+  borderColor: '#607D8B', // Ajout du borderColor
+  borderWidth: 0,
+  // borderColor: 'green', // Ajout du borderColor
+  // borderWidth: 2, // Ajout de la largeur de la bordure
+  borderRadius:10,
+  backgroundColor:'#D35400',
+  shadowOffset: {
+    width: 0,
+    height: 2,
+    },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  elevation: 5, // Pour Android
+},
+spaceBetween: {
+  justifyContent: 'space-between',
+},
+box: {
+  width: '100%',
+  height: '100%',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginVertical: 10,
+  overflow: 'hidden',
+  backgroundColor: '#099138',
+  borderRadius: Spacing,
+},
+box1: {
+  width: '115%',
+  height: '100%',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginVertical: 10,
+  overflow: 'hidden',
+  backgroundColor: 'black',
+  borderRadius: 50,
+},
+iconContainer: {
+  borderRadius: Spacing,
+  backgroundColor: 'white',
+  padding: 10,
+  marginBottom: 10,
+  shadowOffset: {
+    width: 0,
+    height: 2,
+    },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  elevation: 5, // Pour Android
+
+},
+boxRed: {
+  backgroundColor: '#055093',
+},
+boxText: {
+  color: 'black',
+  fontSize: FontSize.medium,
+  marginTop: 5,
+},
+boxText1: {
+  color: 'white',
+  fontSize: 14,
+  marginTop: 2,
+  fontWeight:'600'
+},
+elementsRecensesContainer: {
+  justifyContent: 'flex-end', // Aligner à droite
+},
+buttonContainer: {
+  marginRight: 'auto', // Mettre à gauche autant que possible pour pousser le bouton à droite
+},
+
+elementsRecensesText: {
+  fontSize: FontSize.medium,
+  fontWeight: 'bold',
+  color: '#141716',
+  marginBottom: 10,
+},
+elementRecense: {
+  backgroundColor: '#ECEFF1',
+  borderRadius: 5,
+  padding: 10,
+  marginLeft:15,
+  elevation: 3,
+  borderWidth: 0,
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 2,
   },
-  infoText: {
-    color: '#ffffff', // Couleur du texte à l'intérieur de la boîte d'informations
-    fontSize: FontSize.medium, // Taille de la police du texte
-    fontWeight: 'bold',
-    fontFamily: Font['poppins-regular'], // Poids de la police en gras
+  shadowOpacity: 0.50,
+  shadowRadius: 3.84,
+  elevation: 5, // Pour Android
+},
+recenseImage: {
+  width: 200,
+  height: 100,
+  borderRadius: 5,
+  marginBottom: 10,
+},
+detailRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  marginBottom: 15, // Ajouter un espacement entre chaque paire de détails
+  borderWidth: 0, // Ajouter une bordure basse
+},
+detailLabel: {
+  fontSize: FontSize.medium,
+  fontWeight: 'bold',
+  color: '#154360',
+  marginRight: 10, // Ajouter un espacement entre l'étiquette et la valeur
+},
+detailValue: {
+  fontSize: FontSize.medium,
+  color: '#141716',
+},
+detailsContainer: {
+  marginTop: 10,
+},
+detailText: {
+  fontSize: FontSize.small,
+  fontWeight:'800',
+  marginBottom: 10,
+  borderBottomWidth: 2,
+  paddingBottom: 5,
+},
+inputContainer: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+},
+
+column: {
+  flex: 1,
+  marginRight: 10, // Espace entre les colonnes
+},
+modalContainer: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  
+},
+
+modalContent: {
+  backgroundColor: 'white',
+  padding: 20,
+  borderRadius: 10,
+  width: '80%',
+  flexDirection: 'column', // Utilisez flexDirection: 'column' pour disposer les éléments en colonnes
+  alignItems: 'center', // Alignez les éléments au centre de la colonne
+  width:'95%',
+},
+
+modalTitle: {
+  fontSize: FontSize.large,
+  fontWeight: 'bold',
+  marginBottom: 10,
+},
+
+inputField: {
+  width: '100%',
+  height: 40,
+  borderColor: '#ccc',
+  borderWidth: 1,
+  borderRadius: 5,
+  marginBottom: 10,
+  paddingLeft: 10,
+},
+
+editButton: {
+  backgroundColor: '#099138',
+  paddingVertical: 12,
+  paddingHorizontal: 20,
+  borderRadius: 8,
+  marginTop: 10,
+  elevation: 3,
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 2,
   },
-  noDataContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+},
+
+editButtonText: {
+  color: 'white',
+  fontSize: FontSize.medium,
+  fontWeight: 'bold',
+},
+
+cancelButton: {
+  backgroundColor: '#FF5733',
+  paddingVertical: 12,
+  paddingHorizontal: 20,
+  borderRadius: 8,
+  marginTop: 10,
+  elevation: 3,
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 2,
   },
-  noDataText: {
-    fontSize: FontSize.medium,
-    color: Colors.darkText,
-    fontFamily: Font['poppins-regular'],
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+},
+
+cancelButtonText: {
+  color: 'white',
+  fontSize: FontSize.medium,
+  fontWeight: 'bold',
+},
+googleButton: {
+  backgroundColor: '#4285F4',
+  paddingVertical: 12,
+  paddingHorizontal: 20,
+  borderRadius: 8,
+  elevation: 3, // Pour l'ombre sur Android
+  shadowColor: '#000', // Ombre sur iOS
+  shadowOffset: {
+    width: 0,
+    height: 2,
   },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+},
+
+googleButtonText: {
+  color: 'white',
+  fontSize: FontSize.medium,
+  fontWeight: 'bold',
+},
+modalImage: {
+  width: 100, // Ajustez en fonction de vos besoins
+  height: 100, // Ajustez en fonction de vos besoins
+  borderRadius: 5,
+  marginTop: 10,
+},
+editImageButton: {
+  backgroundColor: '#3498db',
+  paddingVertical: 12,
+  paddingHorizontal: 20,
+  borderRadius: 8,
+  marginTop: 10,
+  elevation: 3,
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+},
+
+editImageButtonText: {
+  color: 'white',
+  fontSize: FontSize.medium,
+  fontWeight: 'bold',
+},
+
+infoBox: {
+  backgroundColor: '#3498db', // Couleur de fond de la boîte d'informations
+  padding: 10, // Rembourrage interne de la boîte d'informations
+  borderRadius: 8, // Bordure arrondie de la boîte d'informations
+  alignItems: 'center', // Alignement du contenu au centre
+  justifyContent: 'center', // Alignement du contenu au centre
+  marginBottom: 10, // Marge inférieure pour espacement
+},
+infoText: {
+  color: '#ffffff', // Couleur du texte à l'intérieur de la boîte d'informations
+  fontSize: FontSize.medium, // Taille de la police du texte
+  fontWeight: 'bold',
+  fontFamily: Font['poppins-regular'], // Poids de la police en gras
+},
+noDataContainer: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+noDataText: {
+  fontSize: FontSize.medium,
+  color: Colors.darkText,
+  fontFamily: Font['poppins-regular'],
+},
 });
 
-export default Home;
+export default Voir;

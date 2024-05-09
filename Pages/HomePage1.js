@@ -4,12 +4,14 @@ import React, { useState,useEffect } from 'react';
 import { SafeAreaView, StyleSheet, TextInput, Button, Text, View, ImageBackground, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MaterialIcons } from '@expo/vector-icons';
+// import { AuthContext } from '../Components/globalContext';
 
 import Colors from '../constants/Colors';
 import Font from "../constants/Font";
 import FontSize from '../constants/FontSize';
 import Spacing from '../constants/Spacing';
 
+import { Switch } from 'react-native';
 
 const { height, width } = Dimensions.get("screen");
 
@@ -20,7 +22,9 @@ export default function HomPage1({ navigation }) {
   const [marque1, setMarque1] = useState('');
   const [marque, setMarque] = useState('');
   const [commune, setCommune] = useState('');
+  const [commune1, setCommune1] = useState('');
   const [typeSupport, setTypeSupport] = useState('');
+  const [typeSupport1, setTypeSupport1] = useState([]);
   const [surface, setSurface] = useState('');
   const [canal, setCanal] = useState('');
   const [canal1, setCanal1] = useState('');
@@ -29,7 +33,49 @@ export default function HomPage1({ navigation }) {
   const [visibilite, setVisibilite] = useState('');
   const [visibilite1, setVisibilite1] = useState('');
   const [duree, setDuree] = useState('');
+  const [quartier, setQuartier] = useState('');
+  const [quartier1, setQuartier1] = useState('');
+  const [switchEnabled, setSwitchEnabled] = useState(false);
+  const [switchEnabled1, setSwitchEnabled1] = useState(false);
 
+
+  
+  // const { userInfo } = useContext(AuthContext);
+  // const authToken = userInfo ? userInfo.access : null;
+
+  const toggleSwitch = () => {
+    setSwitchEnabled((prevState) => !prevState);
+    if (!switchEnabled) {
+      setTypeSupport(''); // Réinitialiser le champ Type Support
+      setSurface(''); // Réinitialiser le champ Surface
+    }
+  };
+
+  const toggleSwitch1 = () => {
+    setSwitchEnabled1((prevState) => !prevState);
+    if (!switchEnabled1) {
+      setQuartier(''); // Réinitialiser le champ Type Support
+    }
+  };
+
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://auditapi.up.railway.app/api/fquartier/');
+        const formattedData = response.data.map((item) => ({
+          label: item.quartier,  // Utilisez "label" pour SelectList
+          value: item.quartier,  // Utilisez "value" pour SelectList
+        }));
+        setQuartier1(formattedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -96,7 +142,8 @@ export default function HomPage1({ navigation }) {
 
     fetchData2();
   }, []);
-  
+
+
   // useEffect(() => {
   //   const fetchData4 = async () => {
   //     try {
@@ -148,15 +195,51 @@ export default function HomPage1({ navigation }) {
     fetchData6();
   }, []);
 
+  useEffect(() => {
+    const fetchData10 = async () => {
+      try {
+        const response = await axios.get('https://auditapi.up.railway.app/api/commune/');
+        const formattedData = response.data.results.map((item) => ({
+          key: item.id.toString(),
+          value: item.commune,
+        }));
+        setCommune1(formattedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData10();
+  }, []);
+
+  useEffect(() => {
+    const fetchData00 = async () => {
+      try {
+        const response = await axios.get('https://auditapi.up.railway.app/api/supports/');
+        const formattedData = response.data.results.map((item) => ({
+          key: item.id.toString(),
+          value: item.type_support,
+        }));
+        setTypeSupport1(formattedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData00();
+  }, []);
+
   const entrepri=[
     {key:'1',value:'Commercial'},
     {key:'2',value:'Non Commercial'}
   ]
+
   // const marq=[
   //   {key:'1',value:'Orange'},
   //   {key:'2',value:'Moov'},
   //   {key:'3',value:'MTN'}
   // ]
+
   const comm = [
     { key: '1', value: 'Abobo' },
     { key: '2', value: 'Adjamé' },
@@ -213,6 +296,7 @@ export default function HomPage1({ navigation }) {
       etatSupport,
       visibilite,
       duree,
+      quartier,
     };
     navigation.navigate('HomPage2', { dataFromHomePage1 });
   };
@@ -225,12 +309,6 @@ export default function HomPage1({ navigation }) {
         scrollEnabled={true}
       >
         <View style={styles.container}>
-          <View style={styles.appB}>
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-              <MaterialIcons name="chevron-left" style={styles.iconeback} />
-            </TouchableOpacity>
-            <Text style={styles.txt} >Enregistrement   1/2</Text>
-          </View>
           <View style={styles.champ}>
             <View style={styles.saisi} >
               <SelectList
@@ -258,31 +336,83 @@ export default function HomPage1({ navigation }) {
               placeholder='Commune ...'
               placeholderTextColor={Colors.darkText}
               setSelected={(val) => setCommune(val)}
-              data={comm}
+              data={commune1}
               save="value"
               value={commune}
               onChangeText={setCommune}
             />
-            <SelectList
-              placeholder='Type support ...'
-              placeholderTextColor={Colors.darkText}
-              setSelected={(val) => setTypeSupport(val)}
-              data={types}
-              save="value"
-              value={typeSupport}
-              onChangeText={setTypeSupport}
-            />
+            
             <View style={styles.saisi} >
-              <TextInput
-                style={styles.inputs}
-                placeholder='Surface'
-                placeholderTextColor={Colors.darkText}
-                keyboardType='numeric'
-                value={surface}
-                onChangeText={setSurface}
+              {!switchEnabled1 && (<SelectList
+              placeholder='Quartier ...'
+              placeholderTextColor={Colors.darkText}
+              setSelected={(val) => setQuartier(val)}
+              data={quartier1}
+              save="value"
+              value={quartier}
+              onChangeText={setQuartier}
+            />)}
+
+            {switchEnabled1 && (
+              <View style={styles.saisi}>
+                <TextInput
+                  style={styles.inputs}
+                  placeholder='Quartier ...'
+                  placeholderTextColor={Colors.darkText}
+                  keyboardType='text'
+                  value={quartier}
+                  onChangeText={setQuartier}
+                />
+              </View>
+            )}
+            <Switch
+                value={switchEnabled1}
+                onValueChange={toggleSwitch1}
+                style={{ marginTop: 10 }}
               />
             </View>
-
+             {/* Champ Type Support */}
+              {!switchEnabled && (
+                <SelectList
+                  placeholder='Type support ...'
+                  placeholderTextColor={Colors.darkText}
+                  setSelected={(val) => setTypeSupport(val)}
+                  data={typeSupport1}
+                  save="value"
+                  value={typeSupport}
+                  onChangeText={setTypeSupport}
+                />
+              )}
+            {switchEnabled && (
+              <View style={styles.saisi}>
+                <TextInput
+                  style={styles.inputs}
+                  placeholder='Type support 2'
+                  placeholderTextColor={Colors.darkText}
+                  keyboardType='text'
+                  value={typeSupport}
+                  onChangeText={setTypeSupport}
+                />
+              </View>
+            )}
+            {/* Champ Surface */}
+              {switchEnabled && (
+                <View style={styles.saisi}>
+                  <TextInput
+                    style={styles.inputs}
+                    placeholder='Surface'
+                    placeholderTextColor={Colors.darkText}
+                    keyboardType='numeric'
+                    value={surface}
+                    onChangeText={setSurface}
+                  />
+                </View>
+              )}
+              <Switch
+                value={switchEnabled}
+                onValueChange={toggleSwitch}
+                style={{ marginBottom: 10 }}
+              />
             <SelectList
               placeholder='Canal ...'
               placeholderTextColor={Colors.darkText}
@@ -301,6 +431,7 @@ export default function HomPage1({ navigation }) {
               value={etatSupport}
               onChangeText={setEtatSupport}
             />
+            
             <SelectList
               placeholder='Visibilité ...'
               placeholderTextColor={Colors.darkText}
@@ -320,14 +451,14 @@ export default function HomPage1({ navigation }) {
                 onChangeText={setDuree}  
               />
             </View>
-            <TouchableOpacity style={styles.btn} onPress={navigateToHomePage2}>
+          </View>
+          <View style={styles.btn1}>
+          <TouchableOpacity style={styles.btn} onPress={navigateToHomePage2}>
               <Text style={styles.btntxt}>Suivant </Text>
               <MaterialIcons name="navigate-next" style={styles.iconeNext} />
             </TouchableOpacity>
           </View>
         </View>
-
-
       </KeyboardAwareScrollView>
     </SafeAreaView>
   )
@@ -337,26 +468,26 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: width / 14,
     height: height,
-    backgroundColor:'#F4F8F7'
+    backgroundColor:'#F2F3F4'
   },
   appB: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
     height: '8%'
 
   },
   iconeback: {
-    fontSize: 35,
+    fontSize: 40,
     color: Colors.primary
   },
   txt: {
-    fontSize: FontSize.large,
-    color: Colors.primary,
-    fontFamily: Font["poppins-bold"],
-    fontWeight: '700',
-    marginVertical: Spacing * 2,
-    paddingHorizontal: width / 8
+    // fontSize: FontSize.large,
+    // color: Colors.primary,
+    // fontFamily: Font["poppins-bold"],
+    // fontWeight: '400',
+    // // marginVertical: Spacing * 2,
+    // paddingHorizontal: 2
+    flexDirection:'row',
   },
   champ: {
     height: '80%',
@@ -374,6 +505,7 @@ const styles = StyleSheet.create({
     borderColor: '#778',
     borderRadius: Spacing,
     width: "100%",
+    borderBottomWidth:2
   },
   label: {
     fontSize: FontSize.small,
@@ -384,13 +516,18 @@ const styles = StyleSheet.create({
     fontSize: FontSize.medium,
     borderColor: '#778',
   },
-  btn: {
-    backgroundColor: Colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
+  btn1: {
+    justifyContent: 'flex-end',
     flexDirection: 'row',
     borderRadius: Spacing,
-    height: "7%"
+  },
+  btn: {
+    backgroundColor: '#5D6D7E',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    borderRadius: Spacing,
+    width:'30%'
   },
   btntxt: {
     color: 'white',
