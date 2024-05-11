@@ -36,6 +36,12 @@ const RecapPage = ({ navigation, route }) => {
       formData.append('description', dataFromHomePage2['emplacementExact']);
       formData.append('observation', dataFromHomePage2['observation']);
       formData.append('ODP', dataFromHomePage2['value1']);
+      formData.append('tauxAP', dataFromHomePage2['AP']);
+      formData.append('tauxAPA', dataFromHomePage2['APA']);
+      formData.append('tauxAPT', dataFromHomePage2['APT']);
+      formData.append('tauxAE', dataFromHomePage2['AE']);
+      formData.append('tauxAEA', dataFromHomePage2['AEA']);
+      formData.append('tauxAET', dataFromHomePage2['AET']);
       formData.append('anciennete', dataFromHomePage2['value3']);
       formData.append('latitude', latitudeFixed);
       formData.append('longitude', longitudeFixed);
@@ -128,6 +134,30 @@ const RecapPage = ({ navigation, route }) => {
         <View style={styles.infoContainer}>
           <Text style={styles.label}>Ancienneté:</Text>
           <Text style={styles.value}>{dataFromHomePage2["value3"] ? 'Oui' : 'Non'}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.label}>Affiche Peinte:</Text>
+          <Text style={styles.value}>{dataFromHomePage2["AP"] ? 'Oui' : 'Non'}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.label}>Affiche Peinte Alcool:</Text>
+          <Text style={styles.value}>{dataFromHomePage2["APA"] ? 'Oui' : 'Non'}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.label}>Affiche Peinte Tabac:</Text>
+          <Text style={styles.value}>{dataFromHomePage2["APT"] ? 'Oui' : 'Non'}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.label}>Annonce Eclairée:</Text>
+          <Text style={styles.value}>{dataFromHomePage2["AE"] ? 'Oui' : 'Non'}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.label}>Annonce Eclairée Alcool:</Text>
+          <Text style={styles.value}>{dataFromHomePage2["AEA"] ? 'Oui' : 'Non'}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.label}>Annonce Eclairée Tabac:</Text>
+          <Text style={styles.value}>{dataFromHomePage2["AET"] ? 'Oui' : 'Non'}</Text>
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.label}>Latitude:</Text>

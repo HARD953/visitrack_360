@@ -576,7 +576,7 @@ const ElementEditForm = ({ selectedElement, handleEdit, handleSave, closeModal,i
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor:'#EBF5FB'
+      backgroundColor:'white'
     },
     button: {
       flexDirection:'row',

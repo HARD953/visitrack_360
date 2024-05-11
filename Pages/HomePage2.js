@@ -19,6 +19,12 @@ export default function HomPage2({ navigation,route }) {
   const [value1, setValue] = useState(false); // Pour le commutateur ODP
   const [value2, setValue2] = useState(false);
   const [value3, setValue3] = useState(false);
+  const [AP, setAP] = useState(false);
+  const [APA, setAPA] = useState(false);
+  const [APT, setAPT] = useState(false);
+  const [AE, setAE] = useState(false);
+  const [AEA, setAEA] = useState(false);
+  const [AET, setAET] = useState(false);
   const [image, setImage] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
@@ -95,6 +101,12 @@ export default function HomPage2({ navigation,route }) {
       observation,
       value1,
       value3,
+      AP,
+      APA,
+      APT,
+      AE,
+      AEA,
+      AET,
       image,
       latitude,
       longitude,
@@ -118,7 +130,7 @@ export default function HomPage2({ navigation,route }) {
             {value1 && (
             <View style={styles.saisi}>
               <TextInput
-                style={styles.inputs1}
+                style={styles.inputs}
                 placeholder="SurfaceODP"
                 placeholderTextColor={Colors.darkText}
                 keyboardType='numeric'
@@ -166,6 +178,7 @@ export default function HomPage2({ navigation,route }) {
           onChangeText={(text) => setLongitude1(text)}
         />
           </View> */}
+          <View style={styles.imView1}>
           <View style={styles.swi}>
             <Text style={styles.textOPD}>Nouveau ?</Text>
             <Switch
@@ -191,54 +204,79 @@ export default function HomPage2({ navigation,route }) {
             />
           </View>
           
-          {/* <View style={styles.swi}>
-            <Text style={styles.textOPD}>TTAP</Text>
+          <View style={styles.swi}>
+            <Text style={styles.textOPD}>Affiche Peinte ?</Text>
             <Switch
-              value={value2}
+              value={AP}
               circleSize={27}
               onValueChange={(newValue1) => {
-                setValue2(newValue1);
+                setAP(newValue1);
               }}
               activeText=""
               inActiveText=""
             />
           </View>
           <View style={styles.swi}>
-            <Text style={styles.textOPD}>TTPAT</Text>
+            <Text style={styles.textOPD}>Affiche Peinte Alcool ?</Text>
             <Switch
-              value={value2}
+              value={APA}
               circleSize={27}
               onValueChange={(newValue1) => {
-                setValue2(newValue1);
+                setAPA(newValue1);
               }}
               activeText=""
               inActiveText=""
             />
           </View>
           <View style={styles.swi}>
-            <Text style={styles.textOPD}>TAE</Text>
+            <Text style={styles.textOPD}>Affiche Peinte Tabac ?</Text>
             <Switch
-              value={value2}
+              value={APT}
               circleSize={27}
               onValueChange={(newValue1) => {
-                setValue2(newValue1);
+                setAPT(newValue1);
               }}
               activeText=""
               inActiveText=""
             />
           </View>
           <View style={styles.swi}>
-            <Text style={styles.textOPD}>TAEAT</Text>
+            <Text style={styles.textOPD}>Annonce Eclairée ?</Text>
             <Switch
-              value={value2}
+              value={AE}
               circleSize={27}
               onValueChange={(newValue1) => {
-                setValue2(newValue1);
+                setAE(newValue1);
               }}
               activeText=""
               inActiveText=""
             />
-          </View> */}
+          </View>
+          <View style={styles.swi}>
+            <Text style={styles.textOPD}>Annonce Eclairée Alcool ?</Text>
+            <Switch
+              value={AEA}
+              circleSize={27}
+              onValueChange={(newValue1) => {
+                setAEA(newValue1);
+              }}
+              activeText=""
+              inActiveText=""
+            />
+          </View>
+          <View style={styles.swi}>
+            <Text style={styles.textOPD}>Annonce Eclairée Tabac?</Text>
+            <Switch
+              value={AET}
+              circleSize={27}
+              onValueChange={(newValue1) => {
+                setAET(newValue1);
+              }}
+              activeText=""
+              inActiveText=""
+            />
+          </View>
+          </View>
           <View style={styles.imView}>
             <View style={styless.buttonsContainer}>
               <TouchableOpacity style={styless.uploadButton} onPress={pickImage}>
@@ -303,11 +341,12 @@ const styless = StyleSheet.create({
   },
   imageContainer: {
     alignItems: 'center',
-    justifyContent:'center'
+    justifyContent:'center',
+    width: '100%',
   },
   imagePreview: {
     marginBottom: 10,
-    width: 225,
+    width: '100%',
     height: '95%',
     resizeMode: 'contain', // Utilisez "contain" ou "cover" en fonction de vos besoins
     marginTop: 20,
@@ -345,19 +384,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   saisi: {
-    height: "12%",
+    height: "10%",
   },
   inputs: {
     fontFamily: Font["poppins-regular"],
     fontSize: FontSize.medium,
     paddingHorizontal: Spacing * 1.5,
-    paddingTop: Spacing * 1.5,
     borderWidth: 0.5,
     borderColor: '#778',
-    borderRadius: Spacing,
+    borderRadius: Spacing*0.5 ,
     width: "100%",
-    height: "85%",
-    borderBottomWidth:2
+    height: "80%",
   },
   inputs1: {
     fontFamily: Font["poppins-regular"],
@@ -370,8 +407,10 @@ const styles = StyleSheet.create({
     borderBottomWidth:2
   },
   textOPD: {
-    fontSize: FontSize.large,
+    fontSize: 16,
     fontFamily: Font["poppins-semiBold"],
+    color:'white',
+    fontWeight:'bold'
   },
   swi: {
     flexDirection: 'row',
@@ -382,13 +421,31 @@ const styles = StyleSheet.create({
   },
   imView: {
     flexDirection: 'row', // Ajout de flexDirection
-    height: "24%",
+    height: "22%",
     alignItems: 'center',
     justifyContent: 'flex-start',
     borderWidth: 2, // Épaisseur de la bordure augmentée
     borderStyle: 'dashed',
     borderRadius: Spacing,
     borderColor: '#778',
+
+  },
+  imView1: {
+    flexDirection: 'column', // Ajout de flexDirection
+    height: "26%",
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderRadius: Spacing,
+    padding:'2%',
+    backgroundColor:'#3546A5',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 3.84,
+    elevation: 2, // Pour Android
 
   },
   iconeImage: {
