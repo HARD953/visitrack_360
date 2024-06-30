@@ -18,7 +18,6 @@ export default function HomePage4({ navigation, route }) {
 
   const handleSignature = (signature) => {
     setSignature1(signature);
-    console.log(signature); // Vous pouvez gérer la signature comme nécessaire
   };
 
   const handleClear = () => {
