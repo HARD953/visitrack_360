@@ -1,7 +1,8 @@
-import React, { useState ,useContext} from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Modal, Button } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Platform, ImageBackground, Modal, KeyboardAvoidingView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from '../Components/globalContext';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -11,11 +12,15 @@ const LoginPage = () => {
   const [resetPasswordConfirmation, setResetPasswordConfirmation] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
-  const { loading,login }=useContext(AuthContext)
+  const { loading, login } = useContext(AuthContext);
+
+  const emailBorderWidth = useSharedValue(1);
+  const passwordBorderWidth = useSharedValue(1);
 
   const handleLogin = () => {
     console.log('Email:', email);
     console.log('Password:', password);
+    login(email, password); // Assuming login context handles the login process
   };
 
   const handleForgotPassword = () => {
@@ -44,36 +49,61 @@ const LoginPage = () => {
     }
   };
 
+  const emailStyle = useAnimatedStyle(() => {
+    return {
+      borderBottomWidth: withTiming(emailBorderWidth.value, {
+        duration: 300,
+      }),
+    };
+  });
+
+  const passwordStyle = useAnimatedStyle(() => {
+    return {
+      borderBottomWidth: withTiming(passwordBorderWidth.value, {
+        duration: 300,
+      }),
+    };
+  });
+
   return (
     <ImageBackground source={require('../assets/Images/back10.png')} style={styles.backgroundImage}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'Android' ? 'padding' : undefined}
+        keyboardVerticalOffset={Platform.OS === 'Android' ? 0 : 0}
+      >
       <View style={styles.container}>
         <Text style={styles.title}>Audit de visibilité</Text>
-        <View style={styles.inputContainer}>
+        <Animated.View style={[styles.inputContainer, emailStyle]}>
           <TextInput
             style={styles.input}
             placeholder="Email"
             keyboardType="email-address"
             autoCapitalize="none"
-            placeholderTextColor="black"
+            placeholderTextColor="#333"
             onChangeText={(text) => setEmail(text)}
+            onFocus={() => (emailBorderWidth.value = 2)}
+            onBlur={() => (emailBorderWidth.value = 1)}
           />
-        </View>
-        <View style={styles.inputContainer}>
+        </Animated.View>
+        <Animated.View style={[styles.inputContainer, passwordStyle]}>
           <TextInput
             style={styles.input}
             placeholder="Mot de passe"
             secureTextEntry={!showPassword}
-            placeholderTextColor="black"
+            placeholderTextColor="#333"
             onChangeText={(text) => setPassword(text)}
+            onFocus={() => (passwordBorderWidth.value = 2)}
+            onBlur={() => (passwordBorderWidth.value = 1)}
           />
           <TouchableOpacity
             style={styles.showPasswordIcon}
             onPress={() => setShowPassword(!showPassword)}
           >
-            <Icon name={showPassword ? 'eye-off' : 'eye'} size={20} color="black" />
+            <Icon name={showPassword ? 'eye-off' : 'eye'} size={20} color="#333" />
           </TouchableOpacity>
-        </View>
-        <TouchableOpacity style={styles.loginButton} onPress={()=>{login(email,password)}}>
+        </Animated.View>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.buttonText}>Connexion</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleForgotPassword}>
@@ -95,11 +125,21 @@ const LoginPage = () => {
                     style={styles.input1}
                     placeholder="Numéro de téléphone"
                     keyboardType="numeric"
-                    placeholderTextColor="black"
+                    placeholderTextColor="#333"
                   />
                   <View style={styles.modalButtons}>
-                    <Button title="Annuler" onPress={() => setIsForgotPasswordModalVisible(false)} />
-                    <Button title="Confirmer"  />
+                    <TouchableOpacity
+                      style={[styles.modalButton, { backgroundColor: '#ccc' }]}
+                      onPress={() => setIsForgotPasswordModalVisible(false)}
+                    >
+                      <Text style={styles.modalButtonText}>Annuler</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.modalButton, { backgroundColor: '#3F51B5' }]}
+                      onPress={handleResetPassword}
+                    >
+                      <Text style={[styles.modalButtonText, { color: '#fff' }]}>Confirmer</Text>
+                    </TouchableOpacity>
                   </View>
                 </>
               ) : (
@@ -115,16 +155,17 @@ const LoginPage = () => {
           visible={isModalVisible}
           onRequestClose={hideModal}
         >
-          <View style={styles.modalContainer}>
+          <View style={styles.centeredView}>
             <View style={styles.modalContent}>
               <Text>{modalMessage}</Text>
               <TouchableOpacity onPress={hideModal}>
-                <Text>Fermer</Text>
+                <Text style={styles.modalCloseButton}>Fermer</Text>
               </TouchableOpacity>
             </View>
           </View>
         </Modal>
       </View>
+      </KeyboardAvoidingView>
     </ImageBackground>
   );
 };
@@ -133,6 +174,7 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
+    justifyContent: 'center',
   },
   container: {
     flex: 1,
@@ -141,46 +183,31 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 24,
-    color: '#2E4053',
+    color: '#3F51B5',
   },
   inputContainer: {
     width: '100%',
-    marginBottom: 25,
+    marginBottom: 16,
     flexDirection: 'row',
     alignItems: 'center',
   },
   input: {
     flex: 1,
     height: 40,
-    borderColor: '#3949AB',
-    borderBottomWidth: 2,
-    borderRadius: 8,
     paddingLeft: 8,
-    color: 'black',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  input1: {
-    flex: 1,
-    height: 100,
-    borderColor: '#3949AB',
-    borderBottomWidth: 2,
-    borderRadius: 8,
-    paddingLeft: 8,
-    color: 'black',
-    fontSize: 14,
-    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#333',
   },
   showPasswordIcon: {
-    padding: 0,
-    margin: 0,
+    padding: 8,
   },
   loginButton: {
     backgroundColor: '#3F51B5',
-    padding: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 32,
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 24,
@@ -192,7 +219,7 @@ const styles = StyleSheet.create({
   },
   forgotPassword: {
     marginTop: 16,
-    color: '#2E4053',
+    color: '#3F51B5',
     fontSize: 14,
     fontWeight: 'bold',
   },
@@ -200,7 +227,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fond semi-transparent
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalView: {
     backgroundColor: 'white',
@@ -208,11 +235,12 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
     width: '80%',
-    height: '20%',
   },
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+    fontSize: 16,
+    color: '#333',
   },
   modalButtons: {
     flexDirection: 'row',
@@ -220,16 +248,21 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 15,
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
+  modalButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
+  modalButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  modalCloseButton: {
+    marginTop: 16,
+    fontSize: 16,
+    color: '#3F51B5',
+    fontWeight: 'bold',
   },
 });
 

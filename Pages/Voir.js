@@ -17,7 +17,7 @@ import axios from 'axios';
 import { Ionicons } from '@expo/vector-icons';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import Carousel from 'react-native-snap-carousel';
+// import Carousel from 'react-native-snap-carousel';
 import * as ImagePicker from 'expo-image-picker';
 import TabBar from './TabBar';
 

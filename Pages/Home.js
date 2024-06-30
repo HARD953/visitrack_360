@@ -14,12 +14,10 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import axios from 'axios';
-import { Ionicons } from '@expo/vector-icons';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import Carousel from 'react-native-snap-carousel';
 import * as ImagePicker from 'expo-image-picker';
-import TabBar from './TabBar';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
 import Font from "../constants/Font";
@@ -210,7 +208,7 @@ const Home = ({ navigation }) => {
                         <View style={styles.carre}>
                         <TouchableActionBox1
                           // onPress={() => navigation.navigate('HomPage1')}
-                          icon="star"
+                          icon="check-circle-outline"
                           text="Bon"
                           data={etatRecenses["nombre_support_bon"]}
                         />
@@ -218,7 +216,7 @@ const Home = ({ navigation }) => {
                         <View style={styles.carre1}>
                        <TouchableActionBox1
                           // onPress={() => navigation.navigate('HomPage1')}
-                          icon="warning"
+                          icon="error-outline"
                           text="Détérioré"
                           data={etatRecenses["nombre_support_deteriore"]}
                         />
@@ -226,7 +224,7 @@ const Home = ({ navigation }) => {
                         <View style={styles.carre2}>
                        <TouchableActionBox1
                           // onPress={() => navigation.navigate('HomPage1')}
-                          icon="leaf-outline"
+                          icon="warning-amber"
                           text="Défraichis"
                           data={etatRecenses["nombre_support_defraichis"]}
                         />
@@ -259,14 +257,14 @@ const Home = ({ navigation }) => {
             <View style={styles.rightView}>
               <TouchableActionBox
                 onPress={() => navigation.navigate('HomPage1')}
-                icon="basket-outline"
-                text="Collecte"
+                icon="announcement"
+                text="Collecte des supports"
               />
             </View>
             <View style={styles.rightViewB}>
               <TouchableActionBox
                 onPress={toggleMapVisibility}
-                icon="md-locate"
+                icon="my-location"
                 text="Localisation"
               />
             </View>
@@ -337,7 +335,7 @@ const Home = ({ navigation }) => {
 const TouchableActionBox = ({ onPress, icon, color, text }) => (
   <TouchableOpacity onPress={onPress} style={[styles.box, { backgroundColor: color }]}>
     <View style={styles.iconContainer}>
-      <Ionicons name={icon} size={50} color="#607D8B"/>
+      <MaterialIcons name={icon} size={50} color="#808080"/>
     </View>
     <Text style={styles.boxText}>{text}</Text>
   </TouchableOpacity>
@@ -346,7 +344,7 @@ const TouchableActionBox = ({ onPress, icon, color, text }) => (
 const TouchableActionBox1 = ({ onPress, icon, color, text,data }) => (
   <TouchableOpacity onPress={onPress} style={[styles.box1, { backgroundColor: color }]}>
     <View>
-      <Ionicons name={icon} size={20} color="white" /> 
+      <MaterialIcons name={icon} size={20} color="white" /> 
     </View>
     <Text style={styles.boxText1}>{data}</Text>
     <Text style={styles.boxText1}>{text }</Text>
@@ -629,13 +627,13 @@ const styles = StyleSheet.create({
     borderRadius:Spacing,
     borderColor:'#1ABC9C',
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 3.84,
-    elevation: 2, // Pour Android
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.5,
+    // shadowRadius: 3.84,
+    // elevation: 2, // Pour Android
   },
   collecte: {
     fontSize: 15,
@@ -842,13 +840,13 @@ const styles = StyleSheet.create({
     elevation: 3,
     borderWidth: 0,
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.50,
-    shadowRadius: 3.84,
-    elevation: 5, // Pour Android
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.50,
+    // shadowRadius: 3.84,
+    // elevation: 5, // Pour Android
   },
   recenseImage: {
     width: 200,

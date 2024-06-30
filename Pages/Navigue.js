@@ -6,11 +6,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../Components/globalContext';
 import HomPage1 from './HomePage1';
 import HomPage2 from './HomePage2';
+import HomePage3 from './HomePage3';
+import HomePage4 from './HomePage4';
 import Home from './Home';
 import RecapPage from './Recape';
 import ProfilePage from './Profile';
 import SplashScreens from './Splashsubmit';
-import TabBar from './TabBar';
 import Voir from './Voir';
 import LoginPage from './LoginPage';
 // import YourComponent1 from './Pages/Coordonne';
@@ -41,9 +42,9 @@ export default function Navigue({ navigation }) {
             headerTintColor: '#5D6D7E',
             headerRight: () => (
               <Ionicons
-                name="log-out" 
+                name="log-out-outline" 
                 size={30}
-                color="#D0D3D4"
+                color="white"
                 style={{ marginRight: 20 }}
                 onPress={() => {
                   logout()
@@ -56,7 +57,7 @@ export default function Navigue({ navigation }) {
           })}
         />
         <Stack.Screen name="HomPage1" component={HomPage1} options={({ navigation }) => ({
-                        title: 'Visitrack360',
+                        title: '',
                         headerShown: true,
                         headerStyle: {
                         backgroundColor: '#5D6D7E',
@@ -67,7 +68,7 @@ export default function Navigue({ navigation }) {
                         },
                         headerRight: () => (
                         <Ionicons
-                            name="log-out"
+                            name="log-out-outline"
                             size={30}
                             color="white"
                             style={{ marginRight: 20 }}
@@ -78,7 +79,7 @@ export default function Navigue({ navigation }) {
                 ),
         })}/>
         <Stack.Screen name="HomPage2" component={HomPage2} options={({ navigation }) => ({
-                        title: 'Lanfiatech',
+                        title: '',
                         headerStyle: {
                         backgroundColor: '#5D6D7E',
                         },
@@ -88,7 +89,51 @@ export default function Navigue({ navigation }) {
                         },
                         headerRight: () => (
                         <Ionicons
-                            name="log-out"
+                            name="log-out-outline"
+                            size={30}
+                            color="white"
+                            style={{ marginRight: 20 }}
+                            onPress={() => {
+                            logout()
+                    }}
+                />
+                ),
+        })}/>
+        <Stack.Screen name="HomePage3" component={HomePage3} options={({ navigation }) => ({
+                        
+                        title: '',
+                        headerStyle: {
+                        backgroundColor: '#5D6D7E',
+                        },
+                        headerTintColor: 'white',
+                        headerTitleStyle: {
+                        fontWeight: 'bold',
+                        },
+                        headerRight: () => (
+                        <Ionicons
+                            name="log-out-outline"
+                            size={30}
+                            color="white"
+                            style={{ marginRight: 20 }}
+                            onPress={() => {
+                            logout()
+                    }}
+                />
+                ),
+        })}/>
+        <Stack.Screen name="HomePage4" component={HomePage4} options={({ navigation }) => ({
+                        
+                        title: '',
+                        headerStyle: {
+                        backgroundColor: '#5D6D7E',
+                        },
+                        headerTintColor: 'white',
+                        headerTitleStyle: {
+                        fontWeight: 'bold',
+                        },
+                        headerRight: () => (
+                        <Ionicons
+                            name="log-out-outline"
                             size={30}
                             color="white"
                             style={{ marginRight: 20 }}
@@ -100,7 +145,7 @@ export default function Navigue({ navigation }) {
         })}/>
         <Stack.Screen name="RecapPage" component={RecapPage} options={({ navigation }) => ({
                         
-                        title: 'RecapPage',
+                        title: '',
                         headerStyle: {
                         backgroundColor: '#5D6D7E',
                         },
@@ -110,7 +155,7 @@ export default function Navigue({ navigation }) {
                         },
                         headerRight: () => (
                         <Ionicons
-                            name="log-out"
+                            name="log-out-outline"
                             size={30}
                             color="white"
                             style={{ marginRight: 20 }}
@@ -132,7 +177,7 @@ export default function Navigue({ navigation }) {
                         
                         headerRight: () => (
                         <Ionicons
-                            name="log-out"
+                            name="log-out-outline"
                             size={30}
                             color="white"
                             style={{ marginRight: 20 }}
@@ -155,7 +200,7 @@ export default function Navigue({ navigation }) {
                         
                         headerRight: () => (
                         <Ionicons
-                            name="log-out"
+                            name="log-out-outline"
                             size={30}
                             color="white"
                             style={{ marginRight: 20 }}

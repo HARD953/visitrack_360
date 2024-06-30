@@ -1,7 +1,7 @@
 import { SelectList } from 'react-native-dropdown-select-list'
 import axios from "axios";
 import React, { useState,useEffect } from 'react';
-import { SafeAreaView, StyleSheet, TextInput, Button, Text, View, ImageBackground, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
+import { SafeAreaView, StyleSheet, TextInput, Text, View, Dimensions, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MaterialIcons } from '@expo/vector-icons';
 // import { AuthContext } from '../Components/globalContext';
@@ -23,6 +23,8 @@ export default function HomPage1({ navigation }) {
   const [marque, setMarque] = useState('');
   const [commune, setCommune] = useState('');
   const [commune1, setCommune1] = useState('');
+  const [site, setSite] = useState('');
+  const [site1, setSite1] = useState('');
   const [typeSupport, setTypeSupport] = useState('');
   const [typeSupport1, setTypeSupport1] = useState([]);
   const [surface, setSurface] = useState('');
@@ -38,8 +40,6 @@ export default function HomPage1({ navigation }) {
   const [switchEnabled, setSwitchEnabled] = useState(false);
   const [switchEnabled1, setSwitchEnabled1] = useState(false);
 
-
-  
   // const { userInfo } = useContext(AuthContext);
   // const authToken = userInfo ? userInfo.access : null;
 
@@ -144,19 +144,21 @@ export default function HomPage1({ navigation }) {
   }, []);
 
 
-  // useEffect(() => {
-  //   const fetchData4 = async () => {
-  //     try {
-  //       const response = await axios.get('https://auditapi.up.railway.app/api/site/');
-  //       const formattedData = response.data.results.map((item) => ({
-  //         key: item.id.toString(),
-  //         value: item.marque,
-  //       }));
-  //       set(formattedData);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData4 = async () => {
+      try {
+        const response = await axios.get('https://auditapi.up.railway.app/api/site/');
+        const formattedData = response.data.results.map((item) => ({
+          key: item.id.toString(),
+          value: item.site,
+        }));
+        setSite1(formattedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData4();
+  }, []);
 
   //   fetchData4();
   // }, []);
@@ -260,10 +262,10 @@ export default function HomPage1({ navigation }) {
     {key:'8',value:'Guirlandes'},
   ]
 
-  const site=[
-    {key:'1',value:'Commercial'},
-    {key:'2',value:'Non Commercial'}
-  ]
+  // const site=[
+  //   {key:'1',value:'Commercial'},
+  //   {key:'2',value:'Non Commercial'}
+  // ]
   
   // const canals=[
   //   {key:'1',value:'Agence'},
@@ -296,6 +298,7 @@ export default function HomPage1({ navigation }) {
       etatSupport,
       visibilite,
       duree,
+      site,
       quartier,
     };
     navigation.navigate('HomPage2', { dataFromHomePage1 });
@@ -430,6 +433,16 @@ export default function HomPage1({ navigation }) {
               save="value"
               value={etatSupport}
               onChangeText={setEtatSupport}
+            />
+
+            <SelectList
+              placeholder='Site ...'
+              placeholderTextColor={Colors.darkText}
+              setSelected={(val) => setSite(val)}
+              data={site1}
+              save="value"
+              value={site}
+              onChangeText={setVisibilite}
             />
             
             <SelectList

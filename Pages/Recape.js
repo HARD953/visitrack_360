@@ -1,4 +1,4 @@
-import React, {useState,useContext} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import axios from 'axios';
@@ -6,22 +6,22 @@ import { AuthContext } from '../Components/globalContext';
 
 const RecapPage = ({ navigation, route }) => {
   // Récupérer les données transmises depuis les écrans précédents
-  const { dataFromHomePage1, dataFromHomePage2 } = route.params;
-    const latitude = parseFloat(dataFromHomePage2['latitude']);
-    const longitude = parseFloat(dataFromHomePage2['longitude']);
+  const { dataFromHomePage1, dataFromHomePage2, dataFromHomePage3, dataFromHomePage4 } = route.params;
+  const latitude = parseFloat(dataFromHomePage2['latitude']);
+  const longitude = parseFloat(dataFromHomePage2['longitude']);
+  const latitudeFixed = isNaN(latitude) ? 5.308616 : latitude;
+  const longitudeFixed = isNaN(longitude) ? -4.0176568 : longitude;
+  const { userInfo } = useContext(AuthContext);
+  const headers = { 'Authorization': `Bearer ${userInfo.access}` };
 
-    const latitudeFixed = isNaN(latitude) ? 5.308616: latitude.toFixed(6);
-    const longitudeFixed = isNaN(longitude) ? -4.0176568: longitude.toFixed(6);
-    
-  const { userInfo, splashLoading } = useContext(AuthContext);
-  console.log(userInfo.access)
+  // Récupérer le nom de la route précédente
+  const previousRouteName = navigation.getState().routes.slice(-2, -1)[0]?.name;
 
-  const headers = {
-    'Authorization': `Bearer ${userInfo.access}`,
-  };
   const handleSubmit = async () => {
     try {
       const formData = new FormData();
+      if (previousRouteName == "HomPage2")
+      {
       formData.append('entreprise', dataFromHomePage1['entreprise']);
       formData.append('Marque', dataFromHomePage1['marque']);
       formData.append('commune', dataFromHomePage1['commune']);
@@ -30,6 +30,7 @@ const RecapPage = ({ navigation, route }) => {
       formData.append('surfaceODP', dataFromHomePage2['SurfaceODP']);
       formData.append('canal', dataFromHomePage1['canal']);
       formData.append('etat_support', dataFromHomePage1['etatSupport']);
+      formData.append('site', dataFromHomePage1['site']);
       formData.append('visibilite', dataFromHomePage1['visibilite']);
       formData.append('duree', dataFromHomePage1['duree']);
       formData.append('quartier', dataFromHomePage1['quartier']);
@@ -45,23 +46,77 @@ const RecapPage = ({ navigation, route }) => {
       formData.append('anciennete', dataFromHomePage2['value3']);
       formData.append('latitude', latitudeFixed);
       formData.append('longitude', longitudeFixed);
-      
       if (dataFromHomePage2['image']) {
         formData.append('image_support', {
           uri: dataFromHomePage2['image'],
-          type: 'image/jpeg', // Assurez-vous de spécifier le type MIME correct
-          name: 'imag.jpg', // Nom du fichier sur le serveur
+          type: 'image/jpeg',
+          name: 'image.jpg',
         });
       }
+    }
+else {
+  formData.append('entreprise', dataFromHomePage1['entreprise']);
+      formData.append('Marque', dataFromHomePage1['marque']);
+      formData.append('commune', dataFromHomePage1['commune']);
+      formData.append('type_support', dataFromHomePage1['typeSupport']);
+      formData.append('surface', dataFromHomePage1['surface']);
+      formData.append('surfaceODP', dataFromHomePage2['SurfaceODP']);
+      formData.append('canal', dataFromHomePage1['canal']);
+      formData.append('etat_support', dataFromHomePage1['etatSupport']);
+      formData.append('site', dataFromHomePage1['site']);
+      formData.append('visibilite', dataFromHomePage1['visibilite']);
+      formData.append('duree', dataFromHomePage1['duree']);
+      formData.append('quartier', dataFromHomePage1['quartier']);
+      formData.append('description', dataFromHomePage2['emplacementExact']);
+      formData.append('observation', dataFromHomePage2['observation']);
+      formData.append('ODP', dataFromHomePage2['value1']);
+      formData.append('tauxAP', dataFromHomePage2['AP']);
+      formData.append('tauxAPA', dataFromHomePage2['APA']);
+      formData.append('tauxAPT', dataFromHomePage2['APT']);
+      formData.append('tauxAE', dataFromHomePage2['AE']);
+      formData.append('tauxAEA', dataFromHomePage2['AEA']);
+      formData.append('tauxAET', dataFromHomePage2['AET']);
+      formData.append('anciennete', dataFromHomePage2['value3']);
 
+      formData.append('latitude', latitudeFixed);
+      formData.append('longitude', longitudeFixed);
+      if (dataFromHomePage2['image']) {
+        formData.append('image_support', {
+          uri: dataFromHomePage2['image'],
+          type: 'image/jpeg',
+          name: 'image.jpg',
+        });
+
+      }
+      formData.append('Rnom', dataFromHomePage3['nom']);
+      formData.append('Rprenom', dataFromHomePage3['prenom']);
+      formData.append('Rcontact', dataFromHomePage3['contact']);
+      formData.append('Snom', dataFromHomePage4['nom1']);
+      formData.append('Sprenom', dataFromHomePage4['prenom1']);
+      formData.append('Scontact', dataFromHomePage4['contact1']);
+
+        if (dataFromHomePage3['signature']) {
+          formData.append('signature', {
+            uri: dataFromHomePage3['signature'],
+            type: 'image/jpeg',
+            name: 'signature.jpg',
+          });
+        }
+        if (dataFromHomePage4['signature1']) {
+          formData.append('signature1', {
+            uri: dataFromHomePage4['signature1'],
+            type: 'image/jpeg',
+            name: 'signature1.jpg',
+          });
+      }
+}
       const response = await axios.post(
         'https://auditapi.up.railway.app/api/collectedata/',
         formData,
         {
           headers: {
-            // ...headers,
             'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${userInfo.access}`
+            'Authorization': `Bearer ${userInfo.access}`,
           },
         }
       );
@@ -79,6 +134,9 @@ const RecapPage = ({ navigation, route }) => {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <Text style={styles.title}>Récapitulatif des informations</Text>
+        {/* Cadre pour les informations */}
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Informations générales</Text>  
         <View style={styles.infoContainer}>
           <Text style={styles.label}>Entreprise:</Text>
           <Text style={styles.value}>{dataFromHomePage1["entreprise"]}</Text>
@@ -112,6 +170,10 @@ const RecapPage = ({ navigation, route }) => {
           <Text style={styles.value}>{dataFromHomePage1["etatSupport"]}</Text>
         </View>
         <View style={styles.infoContainer}>
+          <Text style={styles.label}>Site:</Text>
+          <Text style={styles.value}>{dataFromHomePage1["site"]}</Text>
+        </View>
+        <View style={styles.infoContainer}>
           <Text style={styles.label}>Visibilité:</Text>
           <Text style={styles.value}>{dataFromHomePage1["visibilite"]}</Text>
         </View>
@@ -127,6 +189,10 @@ const RecapPage = ({ navigation, route }) => {
           <Text style={styles.label}>Observation:</Text>
           <Text style={styles.value}>{dataFromHomePage2["observation"]}</Text>
         </View>
+        </View>
+        {/* Cadre pour les options ODP et coordonnées */}
+        <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Options ODP et coordonnées</Text>
         <View style={styles.infoContainer}>
           <Text style={styles.label}>ODP:</Text>
           <Text style={styles.value}>{dataFromHomePage2["value1"] ? 'Oui' : 'Non'}</Text>
@@ -167,19 +233,92 @@ const RecapPage = ({ navigation, route }) => {
           <Text style={styles.label}>Longitude:</Text>
           <Text style={styles.value}>{longitudeFixed}</Text>
         </View>
-        <View style={styles.imageContainer}>
-          {dataFromHomePage2["image"] && (
-            <Image
-              source={{ uri: dataFromHomePage2["image"] }}
-              style={styles.image}
-            />
-          )}
-       </View>
+        </View>
+
+        {previousRouteName !== "HomPage2" && (
+        <>
+        {/* Cadre pour les images */}
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Informations de Consentement</Text>
+
+          <View style={styles.infoContainer}>
+            <Text style={styles.label}>Nom Responsable:</Text>
+            <Text style={styles.value}>{dataFromHomePage3["nom"]}</Text>
+          </View>
+          <View style={styles.infoContainer}>
+            <Text style={styles.label}>Prenom Responsable:</Text>
+            <Text style={styles.value}>{dataFromHomePage3["prenom"]}</Text>
+          </View>
+          <View style={styles.infoContainer}>
+            <Text style={styles.label}>Contact Responsable:</Text>
+            <Text style={styles.value}>{dataFromHomePage3["contact"]}</Text>
+          </View>
+          <View style={styles.infoContainer}>
+            <Text style={styles.label}>Nom Superviseur:</Text>
+            <Text style={styles.value}>{dataFromHomePage4["nom1"]}</Text>
+          </View>
+          <View style={styles.infoContainer}>
+            <Text style={styles.label}>Prenom Superviseur:</Text>
+            <Text style={styles.value}>{dataFromHomePage4["prenom1"]}</Text>
+          </View>
+          <View style={styles.infoContainer}>
+            <Text style={styles.label}>Contact Superviseur:</Text>
+            <Text style={styles.value}>{dataFromHomePage4["contact1"]}</Text>
+          </View>
+          </View>
+          {/* Cadre pour les images */}
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Images</Text>
+
+          <View style={styles.imageContainer1}>
+            <View style={styles.imageContainer}>
+              {dataFromHomePage2["image"] && (
+                <Image
+                  source={{ uri: dataFromHomePage2["image"] }}
+                  style={styles.image}
+                />
+              )}
+            </View>
+          <View style={styles.imageContainer}>
+            {dataFromHomePage3["signature"] && (
+              <Image
+                source={{ uri: dataFromHomePage3["signature"] }}
+                style={styles.image}
+              />
+            )}
+          </View>
+          <View style={styles.imageContainer}>
+            {dataFromHomePage4["signature1"] && (
+              <Image
+                source={{ uri: dataFromHomePage4["signature1"] }}
+                style={styles.image}
+              />
+            )}
+          </View>
+          </View>
+          </View>
+        </>
+      )}
+      {previousRouteName == "HomPage2" && (
+        <>
+        {/* Cadre pour les images */}
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Images</Text>
+
+        <View style={styles.imageContainer1}>
+          <View style={styles.imageContainer}>
+            {dataFromHomePage2["image"] && (
+              <Image
+                source={{ uri: dataFromHomePage2["image"] }}
+                style={styles.image}
+              />
+            )}
+          </View>
+        </View>
+        </View>
+        </>)}
       </ScrollView>
-      <TouchableOpacity
-        style={styles.submitButton}
-        onPress={handleSubmit}
-      >
+      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
         <Text style={styles.submitText}>Soumettre</Text>
         <MaterialIcons name="check-circle" size={30} color="white" />
       </TouchableOpacity>
@@ -191,7 +330,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor:'#F4F8F7'
+    backgroundColor: '#F4F8F7',
   },
   scrollContent: {
     flexGrow: 1,
@@ -200,6 +339,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: 'red',
   },
   infoContainer: {
     flexDirection: 'row',
@@ -209,11 +349,9 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: 'bold',
   },
-  value: {
-
-  },
+  value: {},
   submitButton: {
-    backgroundColor: '#5D6D7E', // Couleur du bouton
+    backgroundColor: '#5D6D7E',
     borderRadius: 10,
     flexDirection: 'row',
     alignItems: 'center',
@@ -228,11 +366,29 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     alignItems: 'center',
+    marginBottom: 20,
+  },
+  imageContainer1: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   image: {
-    width: '110%',
-    height: '70%',
+    width: 130,
+    height: 200,
     resizeMode: 'contain',
+  },
+  sectionContainer: {
+    backgroundColor: '#ECF0F1',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 20,
+    elevation: 3, // Ombre pour la profondeur
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
 });
 
