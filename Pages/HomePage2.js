@@ -151,11 +151,7 @@ export default function HomPage2({ navigation, route }) {
 
   return (
     <SafeAreaView>
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        resetScrollToCoords={{ x: 0, y: 0 }}
-        scrollEnabled={true}
-      >
+
       <View style={styles.container}>
         <View style={styles.champ}>
           {value1 && (
@@ -174,6 +170,7 @@ export default function HomPage2({ navigation, route }) {
             <TextInput
               style={styles.inputs}
               placeholder="Emplacement Exat"
+              mode="outlined"
               placeholderTextColor={Colors.darkText}
               multiline={true}
               numberOfLines={7}
@@ -184,6 +181,7 @@ export default function HomPage2({ navigation, route }) {
             <TextInput
               style={styles.inputs}
               placeholder="Observation"
+              mode="outlined"
               placeholderTextColor={Colors.darkText}
               multiline={true}
               numberOfLines={7}
@@ -388,7 +386,6 @@ export default function HomPage2({ navigation, route }) {
           </View>
         </View>
       </Modal>
-      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -462,11 +459,12 @@ const styles = StyleSheet.create({
   },
   champ: {
     height: "80%",
-
+    
     justifyContent: 'space-around',
   },
   saisi: {
-    height: "10%",
+    height: "8%",
+    paddingBottom:'0%',
   },
   inputs: {
     fontFamily: Font["poppins-regular"],

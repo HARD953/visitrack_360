@@ -128,11 +128,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   formContainer: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingBottom:5,
     alignItems: 'center',
   },
   title: {
-    marginBottom: 40,
+    marginBottom: 20,
     fontSize: 20,
     fontWeight: 'bold',
     color: '#333',

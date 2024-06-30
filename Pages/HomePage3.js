@@ -90,7 +90,6 @@ export default function HomePage3({ navigation, route }) {
             mode="outlined"
             keyboardType='numeric'
           />
-
           <View style={styles.signatureContainer}>
             <SignatureScreen
               key={signatureKey} // Utilisation de la clé pour réinitialiser le composant
@@ -131,18 +130,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   formContainer: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingBottom:5,
     alignItems: 'center',
   },
   title: {
-    marginBottom: 40,
+    marginBottom: 20,
     fontSize: 20,
     fontWeight: 'bold',
     color: '#333',
   },
   input: {
     width: '100%',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   signatureContainer: {
     width: '100%',
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     borderRadius: Spacing,
- 
+    paddingTop:7
   },
   btns: {
     backgroundColor: '#5D6D7E',
